@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Star, X, Check, Sparkles } from "lucide-react"
@@ -49,10 +49,12 @@ export function DragDropGame({
 }: DragDropGameProps) {
   const router = useRouter()
   const [draggedItem, setDraggedItem] = useState<DragItem | null>(null)
+  const [selectedItem, setSelectedItem] = useState<DragItem | null>(null)
   const [droppedItems, setDroppedItems] = useState<DroppedItem[]>([])
   const [isCompleted, setIsCompleted] = useState(false)
   const [stars, setStars] = useState(0)
   const [isSaving, setIsSaving] = useState(false)
+  const dropZoneRef = useRef<HTMLDivElement>(null)
 
   // Helper to normalize answer options
   const normalizeOption = (option: string | AnswerOption): { text: string; image?: string } => {
@@ -62,32 +64,37 @@ export function DragDropGame({
     return option
   }
 
-  // Shuffle items
-  const allItems: DragItem[] = [
-    ...correctAnswers.map((option, i) => {
-      const normalized = normalizeOption(option)
-      return {
-        id: `correct-${i}`,
-        text: normalized.text,
-        image: normalized.image,
-        isCorrect: true,
-      }
-    }),
-    ...incorrectAnswers.map((option, i) => {
-      const normalized = normalizeOption(option)
-      return {
-        id: `incorrect-${i}`,
-        text: normalized.text,
-        image: normalized.image,
-        isCorrect: false,
-      }
-    }),
-  ].sort(() => Math.random() - 0.5)
+  // Shuffle items only once using useMemo with empty dependency
+  const allItems: DragItem[] = useMemo(() => {
+    return [
+      ...correctAnswers.map((option, i) => {
+        const normalized = normalizeOption(option)
+        return {
+          id: `correct-${i}`,
+          text: normalized.text,
+          image: normalized.image,
+          isCorrect: true,
+        }
+      }),
+      ...incorrectAnswers.map((option, i) => {
+        const normalized = normalizeOption(option)
+        return {
+          id: `incorrect-${i}`,
+          text: normalized.text,
+          image: normalized.image,
+          isCorrect: false,
+        }
+      }),
+    ].sort(() => Math.random() - 0.5)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const availableItems = allItems.filter((item) => !droppedItems.some((dropped) => dropped.id === item.id))
 
+  // Desktop drag handlers
   const handleDragStart = (item: DragItem) => {
     setDraggedItem(item)
+    setSelectedItem(null)
   }
 
   const handleDragEnd = () => {
@@ -106,9 +113,39 @@ export function DragDropGame({
     e.preventDefault()
   }
 
+  // Mobile tap-to-select handlers
+  const handleItemTap = (item: DragItem) => {
+    if (selectedItem?.id === item.id) {
+      // Deselect if tapping same item
+      setSelectedItem(null)
+    } else {
+      // Select new item
+      setSelectedItem(item)
+    }
+  }
+
+  const handleDropZoneTap = () => {
+    if (selectedItem) {
+      // Drop the selected item
+      setDroppedItems([...droppedItems, { ...selectedItem, droppedAt: Date.now() }])
+      setSelectedItem(null)
+    }
+  }
+
   const handleRemoveItem = (id: string) => {
     setDroppedItems(droppedItems.filter((item) => item.id !== id))
   }
+
+  // Prevent body scroll when touching game area
+  useEffect(() => {
+    const preventScroll = (e: TouchEvent) => {
+      if (selectedItem) {
+        e.preventDefault()
+      }
+    }
+    document.addEventListener('touchmove', preventScroll, { passive: false })
+    return () => document.removeEventListener('touchmove', preventScroll)
+  }, [selectedItem])
 
   const handleSubmit = async () => {
     const correctCount = droppedItems.filter((item) => item.isCorrect).length
@@ -229,9 +266,16 @@ export function DragDropGame({
 
         {/* Drop Zone with Mama Image */}
         <div
-          className="relative rounded-2xl overflow-hidden"
+          ref={dropZoneRef}
+          className={`relative rounded-2xl overflow-hidden transition-all ${
+            selectedItem ? "ring-4 ring-sky-400 ring-opacity-75 animate-pulse" : ""
+          }`}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
+          onClick={handleDropZoneTap}
+          onKeyDown={(e) => e.key === 'Enter' && handleDropZoneTap()}
+          role="button"
+          tabIndex={0}
         >
           {dropZoneImage ? (
             <div className="relative flex flex-col items-center">
@@ -243,13 +287,19 @@ export function DragDropGame({
                 className="object-contain mx-auto drop-shadow-lg"
                 priority
               />
+              {/* Instructions when item selected */}
+              {selectedItem && (
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-sky-500/90 text-white px-4 py-2 rounded-xl text-sm font-medium animate-bounce shadow-lg">
+                  Toca aqui para soltar
+                </div>
+              )}
               {/* Dropped items around the image */}
               <div className="flex flex-wrap gap-2 justify-center mt-3 px-2">
-                {droppedItems.length === 0 ? (
+                {droppedItems.length === 0 && !selectedItem ? (
                   <p className="text-white/90 text-center text-sm py-2 px-4 bg-black/20 rounded-xl backdrop-blur-sm">
-                    Arrastra las opciones hacia la mama
+                    Toca una opcion y luego toca la mama
                   </p>
-                ) : (
+                ) : droppedItems.length === 0 && selectedItem ? null : (
                   droppedItems.map((item) => (
                     <div
                       key={item.id}
@@ -334,7 +384,9 @@ export function DragDropGame({
 
         {/* Available Items */}
         <Card className="rounded-2xl p-4 shadow-lg bg-white/95 backdrop-blur-sm">
-          <h3 className="text-base font-semibold mb-3 text-foreground">Opciones disponibles</h3>
+          <h3 className="text-base font-semibold mb-3 text-foreground">
+            {selectedItem ? "Ahora toca la zona de arriba para soltar" : "Toca una opcion para seleccionarla"}
+          </h3>
           <div className="flex flex-wrap gap-3 justify-center">
             {availableItems.map((item) => (
               <div
@@ -342,8 +394,19 @@ export function DragDropGame({
                 draggable
                 onDragStart={() => handleDragStart(item)}
                 onDragEnd={handleDragEnd}
-                className={`cursor-move bg-white border-2 border-sky-200 rounded-2xl shadow-md hover:shadow-lg hover:scale-105 transition-all active:cursor-grabbing ${
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleItemTap(item)
+                }}
+                onKeyDown={(e) => e.key === 'Enter' && handleItemTap(item)}
+                role="button"
+                tabIndex={0}
+                className={`cursor-pointer bg-white border-2 rounded-2xl shadow-md transition-all select-none ${
                   item.image ? "p-2" : "px-3 py-2"
+                } ${
+                  selectedItem?.id === item.id 
+                    ? "border-sky-500 ring-2 ring-sky-400 scale-110 shadow-xl bg-sky-50" 
+                    : "border-sky-200 hover:shadow-lg hover:scale-105 active:scale-95"
                 }`}
               >
                 {item.image ? (
