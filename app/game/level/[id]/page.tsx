@@ -7,12 +7,17 @@ const levelData = {
     title: "Beneficios del Bebé",
     question: "Arrastra los beneficios de la lactancia materna para el bebé:",
     correctAnswers: [
-      "Fortalece el sistema inmunológico",
-      "Mejora el desarrollo cerebral",
-      "Reduce riesgo de infecciones",
-      "Favorece el vínculo madre-hijo",
+      { text: "Fortalece el sistema inmunológico", image: "/images/options/sistema-inmune.png" },
+      { text: "Mejora el desarrollo cerebral", image: "/images/options/desarrollo-cerebral.png" },
+      { text: "Reduce riesgo de infecciones", image: "/images/options/reduce-infecciones.png" },
+      { text: "Favorece el vínculo madre-hijo", image: "/images/options/vinculo-emocional.png" },
+      { text: "Mejora la digestión", image: "/images/options/estomago-feliz.png" },
     ],
-    incorrectAnswers: ["Causa caries dental", "Aumenta el riesgo de alergias", "Dificulta la digestión"],
+    incorrectAnswers: [
+      // Temporalmente sin imágenes - se agregarán cuando el usuario las proporcione
+      "Causa caries dental",
+      "Aumenta el riesgo de alergias",
+    ],
     backgroundImage: "/images/fondo_2.png",
     dropZoneImage: "/images/Mama.png",
   },

@@ -10,9 +10,15 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
 
+interface AnswerOption {
+  text: string
+  image?: string
+}
+
 interface DragItem {
   id: string
   text: string
+  image?: string
   isCorrect: boolean
 }
 
@@ -25,8 +31,8 @@ interface DragDropGameProps {
   userId: string
   title: string
   question: string
-  correctAnswers: string[]
-  incorrectAnswers: string[]
+  correctAnswers: (string | AnswerOption)[]
+  incorrectAnswers: (string | AnswerOption)[]
   backgroundImage?: string
   dropZoneImage?: string
 }
@@ -48,18 +54,34 @@ export function DragDropGame({
   const [stars, setStars] = useState(0)
   const [isSaving, setIsSaving] = useState(false)
 
+  // Helper to normalize answer options
+  const normalizeOption = (option: string | AnswerOption): { text: string; image?: string } => {
+    if (typeof option === "string") {
+      return { text: option }
+    }
+    return option
+  }
+
   // Shuffle items
   const allItems: DragItem[] = [
-    ...correctAnswers.map((text, i) => ({
-      id: `correct-${i}`,
-      text,
-      isCorrect: true,
-    })),
-    ...incorrectAnswers.map((text, i) => ({
-      id: `incorrect-${i}`,
-      text,
-      isCorrect: false,
-    })),
+    ...correctAnswers.map((option, i) => {
+      const normalized = normalizeOption(option)
+      return {
+        id: `correct-${i}`,
+        text: normalized.text,
+        image: normalized.image,
+        isCorrect: true,
+      }
+    }),
+    ...incorrectAnswers.map((option, i) => {
+      const normalized = normalizeOption(option)
+      return {
+        id: `incorrect-${i}`,
+        text: normalized.text,
+        image: normalized.image,
+        isCorrect: false,
+      }
+    }),
   ].sort(() => Math.random() - 0.5)
 
   const availableItems = allItems.filter((item) => !droppedItems.some((dropped) => dropped.id === item.id))
@@ -231,16 +253,33 @@ export function DragDropGame({
                   droppedItems.map((item) => (
                     <div
                       key={item.id}
-                      className={`flex items-center gap-1 px-3 py-2 rounded-xl shadow-md text-sm ${
+                      className={`relative flex flex-col items-center p-1 rounded-xl shadow-md ${
                         item.isCorrect
-                          ? "bg-green-100/95 text-green-800 border border-green-300"
-                          : "bg-red-100/95 text-red-800 border border-red-300"
+                          ? "bg-green-100/95 border-2 border-green-400"
+                          : "bg-red-100/95 border-2 border-red-400"
                       }`}
                     >
-                      {item.isCorrect ? <Check size={14} /> : <X size={14} />}
-                      <span className="font-medium text-xs">{item.text}</span>
-                      <button onClick={() => handleRemoveItem(item.id)} className="ml-1 hover:opacity-70">
-                        <X size={12} />
+                      {item.image ? (
+                        <Image
+                          src={item.image || "/placeholder.svg"}
+                          alt={item.text}
+                          width={50}
+                          height={50}
+                          className="object-contain"
+                        />
+                      ) : (
+                        <span className="font-medium text-xs px-2">{item.text}</span>
+                      )}
+                      <div className={`absolute -top-1 -right-1 rounded-full p-0.5 ${
+                        item.isCorrect ? "bg-green-500" : "bg-red-500"
+                      }`}>
+                        {item.isCorrect ? <Check size={10} className="text-white" /> : <X size={10} className="text-white" />}
+                      </div>
+                      <button 
+                        onClick={() => handleRemoveItem(item.id)} 
+                        className="absolute -bottom-1 -right-1 bg-gray-600 rounded-full p-0.5 hover:bg-gray-800"
+                      >
+                        <X size={10} className="text-white" />
                       </button>
                     </div>
                   ))
@@ -257,16 +296,33 @@ export function DragDropGame({
                   droppedItems.map((item) => (
                     <div
                       key={item.id}
-                      className={`flex items-center gap-1 px-3 py-2 rounded-xl shadow-md text-sm ${
+                      className={`relative flex flex-col items-center p-1 rounded-xl shadow-md ${
                         item.isCorrect
-                          ? "bg-green-100 text-green-800 border border-green-300"
-                          : "bg-red-100 text-red-800 border border-red-300"
+                          ? "bg-green-100 border-2 border-green-400"
+                          : "bg-red-100 border-2 border-red-400"
                       }`}
                     >
-                      {item.isCorrect ? <Check size={14} /> : <X size={14} />}
-                      <span className="font-medium">{item.text}</span>
-                      <button onClick={() => handleRemoveItem(item.id)} className="ml-1 hover:opacity-70">
-                        <X size={12} />
+                      {item.image ? (
+                        <Image
+                          src={item.image || "/placeholder.svg"}
+                          alt={item.text}
+                          width={50}
+                          height={50}
+                          className="object-contain"
+                        />
+                      ) : (
+                        <span className="font-medium text-sm px-2">{item.text}</span>
+                      )}
+                      <div className={`absolute -top-1 -right-1 rounded-full p-0.5 ${
+                        item.isCorrect ? "bg-green-500" : "bg-red-500"
+                      }`}>
+                        {item.isCorrect ? <Check size={10} className="text-white" /> : <X size={10} className="text-white" />}
+                      </div>
+                      <button 
+                        onClick={() => handleRemoveItem(item.id)} 
+                        className="absolute -bottom-1 -right-1 bg-gray-600 rounded-full p-0.5 hover:bg-gray-800"
+                      >
+                        <X size={10} className="text-white" />
                       </button>
                     </div>
                   ))
@@ -279,16 +335,29 @@ export function DragDropGame({
         {/* Available Items */}
         <Card className="rounded-2xl p-4 shadow-lg bg-white/95 backdrop-blur-sm">
           <h3 className="text-base font-semibold mb-3 text-foreground">Opciones disponibles</h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-3 justify-center">
             {availableItems.map((item) => (
               <div
                 key={item.id}
                 draggable
                 onDragStart={() => handleDragStart(item)}
                 onDragEnd={handleDragEnd}
-                className="cursor-move px-3 py-2 bg-white border-2 border-sky-200 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all active:cursor-grabbing text-sm"
+                className={`cursor-move bg-white border-2 border-sky-200 rounded-2xl shadow-md hover:shadow-lg hover:scale-105 transition-all active:cursor-grabbing ${
+                  item.image ? "p-2" : "px-3 py-2"
+                }`}
               >
-                <span className="font-medium text-foreground">{item.text}</span>
+                {item.image ? (
+                  <Image
+                    src={item.image || "/placeholder.svg"}
+                    alt={item.text}
+                    width={70}
+                    height={70}
+                    className="object-contain pointer-events-none"
+                    draggable={false}
+                  />
+                ) : (
+                  <span className="font-medium text-foreground text-sm">{item.text}</span>
+                )}
               </div>
             ))}
           </div>
