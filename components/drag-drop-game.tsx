@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card"
 import { Star, X, Check, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import Image from "next/image"
 
 interface DragItem {
   id: string
@@ -26,6 +27,8 @@ interface DragDropGameProps {
   question: string
   correctAnswers: string[]
   incorrectAnswers: string[]
+  backgroundImage?: string
+  dropZoneImage?: string
 }
 
 export function DragDropGame({
@@ -35,6 +38,8 @@ export function DragDropGame({
   question,
   correctAnswers,
   incorrectAnswers,
+  backgroundImage,
+  dropZoneImage,
 }: DragDropGameProps) {
   const router = useRouter()
   const [draggedItem, setDraggedItem] = useState<DragItem | null>(null)
@@ -184,73 +189,121 @@ export function DragDropGame({
   }
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div 
+      className="min-h-screen p-3 md:p-6 relative"
+      style={backgroundImage ? {
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      } : undefined}
+    >
+      <div className="max-w-lg mx-auto space-y-4">
         {/* Header */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl">
-          <h1 className="text-3xl font-bold mb-2">{title}</h1>
-          <p className="text-lg text-muted-foreground">{question}</p>
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
+          <h1 className="text-xl font-bold mb-1 text-foreground">{title}</h1>
+          <p className="text-sm text-muted-foreground">{question}</p>
         </div>
 
-        {/* Drop Zone */}
-        <Card
-          className="rounded-3xl p-8 min-h-64 border-4 border-dashed border-primary/30 bg-primary/5"
+        {/* Drop Zone with Mama Image */}
+        <div
+          className="relative rounded-2xl overflow-hidden"
           onDrop={handleDrop}
           onDragOver={handleDragOver}
         >
-          <h3 className="text-xl font-semibold mb-4 text-center">Arrastra aquí las respuestas correctas</h3>
-          <div className="flex flex-wrap gap-3 justify-center">
-            {droppedItems.length === 0 ? (
-              <p className="text-muted-foreground text-center py-8">Arrastra las opciones aquí</p>
-            ) : (
-              droppedItems.map((item) => (
-                <div
-                  key={item.id}
-                  className={`flex items-center gap-2 px-4 py-3 rounded-2xl shadow-md ${
-                    item.isCorrect
-                      ? "bg-green-100 text-green-800 border-2 border-green-300"
-                      : "bg-red-100 text-red-800 border-2 border-red-300"
-                  }`}
-                >
-                  {item.isCorrect ? <Check size={20} /> : <X size={20} />}
-                  <span className="font-medium">{item.text}</span>
-                  <button onClick={() => handleRemoveItem(item.id)} className="ml-2 hover:opacity-70">
-                    <X size={16} />
-                  </button>
-                </div>
-              ))
-            )}
-          </div>
-        </Card>
+          {dropZoneImage ? (
+            <div className="relative flex flex-col items-center">
+              <Image
+                src={dropZoneImage || "/placeholder.svg"}
+                alt="Zona de arrastre"
+                width={200}
+                height={240}
+                className="object-contain mx-auto drop-shadow-lg"
+                priority
+              />
+              {/* Dropped items around the image */}
+              <div className="flex flex-wrap gap-2 justify-center mt-3 px-2">
+                {droppedItems.length === 0 ? (
+                  <p className="text-white/90 text-center text-sm py-2 px-4 bg-black/20 rounded-xl backdrop-blur-sm">
+                    Arrastra las opciones hacia la mama
+                  </p>
+                ) : (
+                  droppedItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className={`flex items-center gap-1 px-3 py-2 rounded-xl shadow-md text-sm ${
+                        item.isCorrect
+                          ? "bg-green-100/95 text-green-800 border border-green-300"
+                          : "bg-red-100/95 text-red-800 border border-red-300"
+                      }`}
+                    >
+                      {item.isCorrect ? <Check size={14} /> : <X size={14} />}
+                      <span className="font-medium text-xs">{item.text}</span>
+                      <button onClick={() => handleRemoveItem(item.id)} className="ml-1 hover:opacity-70">
+                        <X size={12} />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          ) : (
+            <Card className="rounded-2xl p-6 min-h-48 border-4 border-dashed border-primary/30 bg-primary/5">
+              <h3 className="text-lg font-semibold mb-3 text-center">Arrastra aquí las respuestas correctas</h3>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {droppedItems.length === 0 ? (
+                  <p className="text-muted-foreground text-center py-6 text-sm">Arrastra las opciones aquí</p>
+                ) : (
+                  droppedItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className={`flex items-center gap-1 px-3 py-2 rounded-xl shadow-md text-sm ${
+                        item.isCorrect
+                          ? "bg-green-100 text-green-800 border border-green-300"
+                          : "bg-red-100 text-red-800 border border-red-300"
+                      }`}
+                    >
+                      {item.isCorrect ? <Check size={14} /> : <X size={14} />}
+                      <span className="font-medium">{item.text}</span>
+                      <button onClick={() => handleRemoveItem(item.id)} className="ml-1 hover:opacity-70">
+                        <X size={12} />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </Card>
+          )}
+        </div>
 
         {/* Available Items */}
-        <Card className="rounded-3xl p-6 shadow-xl">
-          <h3 className="text-xl font-semibold mb-4">Opciones disponibles</h3>
-          <div className="flex flex-wrap gap-3">
+        <Card className="rounded-2xl p-4 shadow-lg bg-white/95 backdrop-blur-sm">
+          <h3 className="text-base font-semibold mb-3 text-foreground">Opciones disponibles</h3>
+          <div className="flex flex-wrap gap-2">
             {availableItems.map((item) => (
               <div
                 key={item.id}
                 draggable
                 onDragStart={() => handleDragStart(item)}
                 onDragEnd={handleDragEnd}
-                className="cursor-move px-4 py-3 bg-white border-2 border-border rounded-2xl shadow-md hover:shadow-lg hover:scale-105 transition-all active:cursor-grabbing"
+                className="cursor-move px-3 py-2 bg-white border-2 border-sky-200 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all active:cursor-grabbing text-sm"
               >
-                <span className="font-medium">{item.text}</span>
+                <span className="font-medium text-foreground">{item.text}</span>
               </div>
             ))}
           </div>
         </Card>
 
         {/* Submit Button */}
-        <div className="flex gap-3">
+        <div className="flex gap-2">
           <Button
             onClick={handleSubmit}
             disabled={droppedItems.length === 0}
-            className="flex-1 rounded-xl py-6 text-lg"
+            className="flex-1 rounded-xl py-5 text-base"
           >
             Verificar Respuestas
           </Button>
-          <Button onClick={() => router.push("/game")} variant="outline" className="rounded-xl px-6">
+          <Button onClick={() => router.push("/game")} variant="outline" className="rounded-xl px-4 bg-white/90">
             Salir
           </Button>
         </div>

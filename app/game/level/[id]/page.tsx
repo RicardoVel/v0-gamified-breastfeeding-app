@@ -13,6 +13,8 @@ const levelData = {
       "Favorece el vínculo madre-hijo",
     ],
     incorrectAnswers: ["Causa caries dental", "Aumenta el riesgo de alergias", "Dificulta la digestión"],
+    backgroundImage: "/images/fondo_2.png",
+    dropZoneImage: "/images/Mama.png",
   },
   2: {
     title: "Beneficios de la Mamá",
@@ -69,6 +71,8 @@ export default async function LevelPage({
       question={level.question}
       correctAnswers={level.correctAnswers}
       incorrectAnswers={level.incorrectAnswers}
+      backgroundImage={"backgroundImage" in level ? level.backgroundImage : undefined}
+      dropZoneImage={"dropZoneImage" in level ? level.dropZoneImage : undefined}
     />
   )
 }
