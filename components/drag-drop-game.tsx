@@ -170,29 +170,48 @@ export function DragDropGame({
     const supabase = createClient()
 
     try {
-      // Update user stats
-      const { data: userData } = await supabase
-        .from("users")
-        .select("total_stars, experience_points, level")
-        .eq("id", userId)
+      // Get the best previous result for this level
+      const { data: previousBest } = await supabase
+        .from("game_progress")
+        .select("stars_earned")
+        .eq("user_id", userId)
+        .eq("level", levelId)
+        .eq("game_type", "drag-drop")
+        .order("stars_earned", { ascending: false })
+        .limit(1)
         .single()
 
-      if (userData) {
-        const newTotalStars = userData.total_stars + earnedStars
-        const newXP = userData.experience_points + earnedStars * 10
-        const newLevel = Math.floor(newXP / 30) + 1
+      const previousStars = previousBest?.stars_earned || 0
+      
+      // Only add the difference if we improved
+      const starsToAdd = earnedStars > previousStars ? earnedStars - previousStars : 0
+      const xpToAdd = starsToAdd * 10
 
-        await supabase
+      // Update user stats only if we improved
+      if (starsToAdd > 0) {
+        const { data: userData } = await supabase
           .from("users")
-          .update({
-            total_stars: newTotalStars,
-            experience_points: newXP,
-            level: newLevel,
-          })
+          .select("total_stars, experience_points, level")
           .eq("id", userId)
+          .single()
+
+        if (userData) {
+          const newTotalStars = userData.total_stars + starsToAdd
+          const newXP = userData.experience_points + xpToAdd
+          const newLevel = Math.floor(newXP / 30) + 1
+
+          await supabase
+            .from("users")
+            .update({
+              total_stars: newTotalStars,
+              experience_points: newXP,
+              level: newLevel,
+            })
+            .eq("id", userId)
+        }
       }
 
-      // Save game progress
+      // Save game progress (always save the attempt)
       await supabase.from("game_progress").insert({
         user_id: userId,
         game_type: "drag-drop",
@@ -202,8 +221,8 @@ export function DragDropGame({
         completed_at: new Date().toISOString(),
       })
 
-      // Award achievement if perfect score
-      if (earnedStars === 3) {
+      // Award achievement if perfect score (only if not already achieved)
+      if (earnedStars === 3 && previousStars < 3) {
         await supabase.from("achievements").insert({
           user_id: userId,
           achievement_type: `level_${levelId}_perfect`,
