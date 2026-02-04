@@ -14,9 +14,9 @@ const levelData = {
       { text: "Mejora la digestión", image: "/images/options/estomago-feliz.png" },
     ],
     incorrectAnswers: [
-      // Temporalmente sin imágenes - se agregarán cuando el usuario las proporcione
-      "Causa caries dental",
-      "Aumenta el riesgo de alergias",
+      { text: "Causa caries dental", image: "/images/options/dulce-caries.png" },
+      { text: "Alimentación con biberón", image: "/images/options/biberon.png" },
+      { text: "Bebidas artificiales", image: "/images/options/bebida-artificial.png" },
     ],
     backgroundImage: "/images/fondo_2.png",
     dropZoneImage: "/images/Mama.png",
