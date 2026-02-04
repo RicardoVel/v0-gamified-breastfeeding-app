@@ -13,6 +13,7 @@ import Image from "next/image"
 interface AnswerOption {
   text: string
   image?: string
+  feedback?: string
 }
 
 interface DragItem {
@@ -20,10 +21,17 @@ interface DragItem {
   text: string
   image?: string
   isCorrect: boolean
+  feedback?: string
 }
 
 interface DroppedItem extends DragItem {
   droppedAt: number
+}
+
+interface FeedbackState {
+  show: boolean
+  isCorrect: boolean
+  message: string
 }
 
 interface DragDropGameProps {
@@ -35,6 +43,7 @@ interface DragDropGameProps {
   incorrectAnswers: (string | AnswerOption)[]
   backgroundImage?: string
   dropZoneImage?: string
+  mascotImage?: string
 }
 
 export function DragDropGame({
