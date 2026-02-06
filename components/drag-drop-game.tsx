@@ -29,9 +29,9 @@ interface DroppedItem extends DragItem {
 }
 
 interface FeedbackState {
-  show: boolean
-  isCorrect: boolean
   message: string
+  isCorrect: boolean
+  visible: boolean
 }
 
 interface DragDropGameProps {
@@ -43,7 +43,6 @@ interface DragDropGameProps {
   incorrectAnswers: (string | AnswerOption)[]
   backgroundImage?: string
   dropZoneImage?: string
-  mascotImage?: string
 }
 
 export function DragDropGame({
@@ -63,14 +62,33 @@ export function DragDropGame({
   const [isCompleted, setIsCompleted] = useState(false)
   const [stars, setStars] = useState(0)
   const [isSaving, setIsSaving] = useState(false)
+  const [feedback, setFeedback] = useState<FeedbackState>({ message: "", isCorrect: false, visible: false })
+  const feedbackTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const dropZoneRef = useRef<HTMLDivElement>(null)
 
   // Helper to normalize answer options
-  const normalizeOption = (option: string | AnswerOption): { text: string; image?: string } => {
+  const normalizeOption = (option: string | AnswerOption): { text: string; image?: string; feedback?: string } => {
     if (typeof option === "string") {
       return { text: option }
     }
     return option
+  }
+
+  // Show feedback with mascot
+  const showFeedback = (item: DragItem) => {
+    if (feedbackTimeoutRef.current) {
+      clearTimeout(feedbackTimeoutRef.current)
+    }
+    const defaultCorrect = "Muy bien! Esa es una respuesta correcta."
+    const defaultIncorrect = "Eso no es correcto. Intenta con otra opcion."
+    setFeedback({
+      message: item.feedback || (item.isCorrect ? defaultCorrect : defaultIncorrect),
+      isCorrect: item.isCorrect,
+      visible: true,
+    })
+    feedbackTimeoutRef.current = setTimeout(() => {
+      setFeedback((prev) => ({ ...prev, visible: false }))
+    }, 4000)
   }
 
   // Shuffle items only once using useMemo with empty dependency
@@ -78,21 +96,23 @@ export function DragDropGame({
     return [
       ...correctAnswers.map((option, i) => {
         const normalized = normalizeOption(option)
-        return {
-          id: `correct-${i}`,
-          text: normalized.text,
-          image: normalized.image,
-          isCorrect: true,
-        }
-      }),
-      ...incorrectAnswers.map((option, i) => {
-        const normalized = normalizeOption(option)
-        return {
-          id: `incorrect-${i}`,
-          text: normalized.text,
-          image: normalized.image,
-          isCorrect: false,
-        }
+      return {
+        id: `correct-${i}`,
+        text: normalized.text,
+        image: normalized.image,
+        isCorrect: true,
+        feedback: normalized.feedback,
+      }
+    }),
+    ...incorrectAnswers.map((option, i) => {
+      const normalized = normalizeOption(option)
+      return {
+        id: `incorrect-${i}`,
+        text: normalized.text,
+        image: normalized.image,
+        isCorrect: false,
+        feedback: normalized.feedback,
+      }
       }),
     ].sort(() => Math.random() - 0.5)
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -114,6 +134,7 @@ export function DragDropGame({
     e.preventDefault()
     if (draggedItem) {
       setDroppedItems([...droppedItems, { ...draggedItem, droppedAt: Date.now() }])
+      showFeedback(draggedItem)
       setDraggedItem(null)
     }
   }
@@ -135,8 +156,9 @@ export function DragDropGame({
 
   const handleDropZoneTap = () => {
     if (selectedItem) {
-      // Drop the selected item
+      // Drop the selected item and show feedback
       setDroppedItems([...droppedItems, { ...selectedItem, droppedAt: Date.now() }])
+      showFeedback(selectedItem)
       setSelectedItem(null)
     }
   }
@@ -144,6 +166,15 @@ export function DragDropGame({
   const handleRemoveItem = (id: string) => {
     setDroppedItems(droppedItems.filter((item) => item.id !== id))
   }
+
+  // Cleanup feedback timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (feedbackTimeoutRef.current) {
+        clearTimeout(feedbackTimeoutRef.current)
+      }
+    }
+  }, [])
 
   // Prevent body scroll when touching game area
   useEffect(() => {
@@ -453,6 +484,43 @@ export function DragDropGame({
             ))}
           </div>
         </Card>
+
+        {/* Mascot Feedback Bubble */}
+        {feedback.visible && (
+          <div 
+            className={`flex items-end gap-3 p-3 rounded-2xl shadow-lg transition-all animate-in slide-in-from-bottom-4 duration-300 ${
+              feedback.isCorrect 
+                ? "bg-green-50 border-2 border-green-300" 
+                : "bg-red-50 border-2 border-red-300"
+            }`}
+          >
+            <Image
+              src="/images/mascota-gota.png"
+              alt="Mascota Gota de Leche"
+              width={60}
+              height={60}
+              className="object-contain flex-shrink-0"
+            />
+            <div className="flex-1 min-w-0">
+              <p className={`text-sm font-bold mb-0.5 ${
+                feedback.isCorrect ? "text-green-700" : "text-red-700"
+              }`}>
+                {feedback.isCorrect ? "Muy bien!" : "No es correcto"}
+              </p>
+              <p className={`text-xs leading-relaxed ${
+                feedback.isCorrect ? "text-green-600" : "text-red-600"
+              }`}>
+                {feedback.message}
+              </p>
+            </div>
+            <button
+              onClick={() => setFeedback((prev) => ({ ...prev, visible: false }))}
+              className="flex-shrink-0 p-1 rounded-full hover:bg-black/10"
+            >
+              <X size={14} className="text-muted-foreground" />
+            </button>
+          </div>
+        )}
 
         {/* Submit Button */}
         <div className="flex gap-2">
