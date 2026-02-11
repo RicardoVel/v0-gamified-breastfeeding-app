@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { DragDropGame } from "@/components/drag-drop-game"
+import { ClassifyGame } from "@/components/classify-game"
 
 const levelData = {
   1: {
@@ -22,18 +23,21 @@ const levelData = {
     dropZoneImage: "/images/Mama.png",
   },
   2: {
-    title: "Beneficios de la Mama",
-    question: "Arrastra los beneficios de la lactancia materna para la madre:",
-    correctAnswers: [
-      { text: "Reduce el riesgo de cancer de mama", feedback: "Estudios demuestran que amamantar reduce el riesgo de cancer de mama y ovario." },
-      { text: "Ayuda a recuperar el peso", feedback: "La produccion de leche consume calorias extra, ayudando a la mama a recuperar su peso." },
-      { text: "Fortalece el vinculo emocional", feedback: "La oxitocina liberada durante la lactancia fortalece el amor y conexion con el bebe." },
-      { text: "Reduce el sangrado postparto", feedback: "La lactancia estimula contracciones uterinas que ayudan a reducir el sangrado despues del parto." },
-    ],
-    incorrectAnswers: [
-      { text: "Causa osteoporosis", feedback: "Esto es un mito. Aunque se pierde calcio durante la lactancia, se recupera al destetar." },
-      { text: "Aumenta el riesgo de depresion", feedback: "Al contrario, la lactancia libera hormonas que ayudan a prevenir la depresion postparto." },
-      { text: "Debilita el sistema inmune", feedback: "La lactancia no debilita a la mama. Su cuerpo se adapta para nutrir al bebe sin afectar su salud." },
+    gameType: "classify" as const,
+    title: "Mitos y Verdades",
+    question: "Clasifica cada concepto: es un MITO o una VERDAD sobre la lactancia?",
+    backgroundImage: "/images/fondo_2.png",
+    classifyItems: [
+      // VERDADES - cartas con beneficios reales
+      { text: "Previene la depresion postparto", image: "/images/cards/prevenir-depresion.png", category: "verdad" as const, feedback: "Correcto! La lactancia libera oxitocina y prolactina que ayudan a prevenir la depresion postparto." },
+      { text: "Menor riesgo de osteoporosis", image: "/images/cards/riesgo-osteoporosis.png", category: "verdad" as const, feedback: "Correcto! Aunque se pierde calcio temporalmente, la lactancia a largo plazo protege contra la osteoporosis." },
+      { text: "Fortalece el vinculo emocional", image: "/images/cards/vinculo-emocional.png", category: "verdad" as const, feedback: "Correcto! El contacto piel a piel y la lactancia fortalecen el lazo emocional entre mama y bebe." },
+      { text: "Ayuda a la recuperacion posparto", image: "/images/cards/recuperacion-posparto.png", category: "verdad" as const, feedback: "Correcto! La lactancia ayuda al utero a contraerse y a la mama a recuperar su peso mas rapido." },
+      { text: "Reduce el riesgo de cancer", image: "/images/cards/prevencion-cancer.png", category: "verdad" as const, feedback: "Correcto! Estudios demuestran que amamantar reduce significativamente el riesgo de cancer de mama y ovario." },
+      // MITOS - iconos negativos
+      { text: "El biberon es igual de bueno", image: "/images/options/biberon.png", category: "mito" as const, feedback: "Esto es un mito! La leche materna tiene componentes vivos y anticuerpos que no se pueden replicar." },
+      { text: "Los dulces en la dieta danan la leche", image: "/images/options/dulce-caries.png", category: "mito" as const, feedback: "Mito! La dieta de la mama no dana la leche. La leche materna siempre es nutritiva para el bebe." },
+      { text: "Las bebidas frias cortan la leche", image: "/images/options/bebida-artificial.png", category: "mito" as const, feedback: "Mito! Las bebidas frias no afectan la produccion ni calidad de la leche materna." },
     ],
   },
   3: {
@@ -72,14 +76,29 @@ export default async function LevelPage({
     redirect("/game")
   }
 
+  // Classify game (Mitos vs Verdades)
+  if ("gameType" in level && level.gameType === "classify") {
+    return (
+      <ClassifyGame
+        levelId={levelId}
+        userId={data.user.id}
+        title={level.title}
+        question={level.question}
+        items={level.classifyItems}
+        backgroundImage={"backgroundImage" in level ? level.backgroundImage : undefined}
+      />
+    )
+  }
+
+  // Default: Drag and Drop game
   return (
     <DragDropGame
       levelId={levelId}
       userId={data.user.id}
       title={level.title}
-      question={level.question}
-      correctAnswers={level.correctAnswers}
-      incorrectAnswers={level.incorrectAnswers}
+      question={"question" in level ? level.question : ""}
+      correctAnswers={"correctAnswers" in level ? level.correctAnswers : []}
+      incorrectAnswers={"incorrectAnswers" in level ? level.incorrectAnswers : []}
       backgroundImage={"backgroundImage" in level ? level.backgroundImage : undefined}
       dropZoneImage={"dropZoneImage" in level ? level.dropZoneImage : undefined}
     />
