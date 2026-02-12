@@ -2,6 +2,7 @@ import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { DragDropGame } from "@/components/drag-drop-game"
 import { ClassifyGame } from "@/components/classify-game"
+import { MatchingGame } from "@/components/matching-game"
 
 const levelData = {
   1: {
@@ -28,35 +29,31 @@ const levelData = {
     question: "Clasifica cada concepto: es un MITO o una VERDAD sobre la lactancia?",
     backgroundImage: "/images/fondo_2.png",
     classifyItems: [
-      // VERDADES - cartas con beneficios reales de la lactancia
-      { text: "Previene la depresion postparto", image: "/images/cards/prevenir-depresion.png", category: "verdad" as const, feedback: "La lactancia libera oxitocina y prolactina, hormonas que ayudan a prevenir la depresion postparto y fortalecen el bienestar emocional de la mama." },
-      { text: "Menor riesgo de osteoporosis", image: "/images/cards/riesgo-osteoporosis.png", category: "verdad" as const, feedback: "Aunque se pierde calcio temporalmente durante la lactancia, el cuerpo lo recupera despues del destete, y a largo plazo la lactancia protege contra la osteoporosis." },
-      { text: "Fortalece el vinculo emocional", image: "/images/cards/vinculo-emocional.png", category: "verdad" as const, feedback: "El contacto piel a piel y la lactancia liberan oxitocina, la hormona del amor, fortaleciendo el lazo emocional entre mama y bebe." },
-      { text: "Ayuda a la recuperacion posparto", image: "/images/cards/recuperacion-posparto.png", category: "verdad" as const, feedback: "La lactancia estimula las contracciones uterinas que ayudan al utero a volver a su tamano normal y consume calorias extra que ayudan a la mama a recuperar su peso." },
-      { text: "Reduce el riesgo de cancer", image: "/images/cards/prevencion-cancer.png", category: "verdad" as const, feedback: "Multiples estudios demuestran que amamantar reduce significativamente el riesgo de cancer de mama y de ovario en la madre." },
+      // VERDADES - iconos con beneficios reales de la lactancia
+      { text: "Previene la depresion postparto", image: "/images/icons/depresion-posparto.png", category: "verdad" as const, feedback: "La lactancia libera oxitocina y prolactina, hormonas que ayudan a prevenir la depresion postparto y fortalecen el bienestar emocional de la mama." },
+      { text: "Menor riesgo de osteoporosis", image: "/images/icons/osteoporosis.png", category: "verdad" as const, feedback: "Aunque se pierde calcio temporalmente durante la lactancia, el cuerpo lo recupera despues del destete, y a largo plazo la lactancia protege contra la osteoporosis." },
+      { text: "Fortalece el vinculo emocional", image: "/images/icons/vinculo-emocional.png", category: "verdad" as const, feedback: "El contacto piel a piel y la lactancia liberan oxitocina, la hormona del amor, fortaleciendo el lazo emocional entre mama y bebe." },
+      { text: "Ayuda a la recuperacion posparto", image: "/images/icons/recuperacion-posparto.png", category: "verdad" as const, feedback: "La lactancia estimula las contracciones uterinas que ayudan al utero a volver a su tamano normal y consume calorias extra que ayudan a la mama a recuperar su peso." },
+      { text: "Reduce el riesgo de cancer", image: "/images/icons/prevencion-cancer.png", category: "verdad" as const, feedback: "Multiples estudios demuestran que amamantar reduce significativamente el riesgo de cancer de mama y de ovario en la madre." },
       // MITOS - conceptos falsos comunes sobre la lactancia
-      { text: "Mi madre no pudo dar pecho, yo tampoco podre", category: "mito" as const, feedback: "La capacidad de amamantar no es hereditaria. La gran mayoria de las mujeres pueden producir leche materna, independientemente de la experiencia de sus madres." },
-      { text: "El ejercicio afecta el sabor de la leche", category: "mito" as const, feedback: "El ejercicio moderado no cambia el sabor ni la calidad de la leche materna. Las mamas activas pueden amamantar sin ninguna preocupacion." },
-      { text: "Si te duele, no debes amamantar", category: "mito" as const, feedback: "El dolor al amamantar generalmente indica un mal agarre o posicion. Con la tecnica correcta y apoyo profesional, la lactancia no debe doler." },
-      { text: "La lactancia te hace engordar", category: "mito" as const, feedback: "Al contrario, la lactancia consume entre 300 y 500 calorias diarias extra, lo que ayuda a muchas madres a perder el peso ganado durante el embarazo." },
-      { text: "Con fiebre no debes amamantar", category: "mito" as const, feedback: "Cuando la mama tiene fiebre, su leche produce anticuerpos que protegen al bebe. Seguir amamantando es lo mejor para la salud del bebe." },
+      { text: "Mi madre no pudo dar pecho, yo tampoco podre", image: "/images/icons/mama-no-podra.png", category: "mito" as const, feedback: "La capacidad de amamantar no es hereditaria. La gran mayoria de las mujeres pueden producir leche materna, independientemente de la experiencia de sus madres." },
+      { text: "El ejercicio afecta el sabor de la leche", image: "/images/icons/ejercicio-sabor-leche.png", category: "mito" as const, feedback: "El ejercicio moderado no cambia el sabor ni la calidad de la leche materna. Las mamas activas pueden amamantar sin ninguna preocupacion." },
+      { text: "Si te duele, no debes amamantar", image: "/images/icons/dolor-no-amamantar.png", category: "mito" as const, feedback: "El dolor al amamantar generalmente indica un mal agarre o posicion. Con la tecnica correcta y apoyo profesional, la lactancia no debe doler." },
+      { text: "La lactancia te hace engordar", image: "/images/icons/amamantar-subir-peso.png", category: "mito" as const, feedback: "Al contrario, la lactancia consume entre 300 y 500 calorias diarias extra, lo que ayuda a muchas madres a perder el peso ganado durante el embarazo." },
+      { text: "Con fiebre no debes amamantar", image: "/images/icons/fiebre-no-amamantar.png", category: "mito" as const, feedback: "Cuando la mama tiene fiebre, su leche produce anticuerpos que protegen al bebe. Seguir amamantando es lo mejor para la salud del bebe." },
     ],
   },
   3: {
-    title: "Mitos y Realidades",
-    question: "Arrastra las VERDADES sobre la lactancia materna:",
-    correctAnswers: [
-      { text: "La leche materna cambia segun las necesidades del bebe", feedback: "La composicion de la leche se adapta a la edad, hora del dia y necesidades del bebe." },
-      { text: "Se puede amamantar hasta los 2 anos o mas", feedback: "La OMS recomienda lactancia materna exclusiva hasta los 6 meses y complementaria hasta los 2 anos o mas." },
-      { text: "El calostro es muy nutritivo", feedback: "El calostro es rico en anticuerpos y nutrientes esenciales, es la primera vacuna del bebe." },
-      { text: "Es el mejor alimento para el bebe", feedback: "La leche materna contiene todos los nutrientes necesarios en las proporciones perfectas para el bebe." },
+    gameType: "matching" as const,
+    title: "Posiciones de Lactancia",
+    question: "Identifica el nombre correcto de cada posicion para amamantar",
+    backgroundImage: "/images/fondo_3.png",
+    matchingPairs: [
+      { name: "Posicion de Cuna", image: "/images/posiciones/cuna.jpg", feedback: "En la posicion de cuna, la mama sostiene al bebe con el brazo del mismo lado del pecho. El bebe descansa sobre el antebrazo, con su cabeza en el pliegue del codo." },
+      { name: "Posicion de Gemelos", image: "/images/posiciones/gemelos.jpg", feedback: "La posicion de gemelos o doble balon permite amamantar a dos bebes al mismo tiempo. Cada bebe se coloca bajo un brazo de la mama, con sus cuerpos hacia atras." },
+      { name: "Posicion Cruzada", image: "/images/posiciones/cruzada.jpeg", feedback: "En la posicion cruzada, la mama sostiene al bebe con el brazo contrario al pecho que ofrece. Esto permite mayor control de la cabeza del bebe para un mejor agarre." },
+      { name: "Posicion Acostada", image: "/images/posiciones/acostado.jpg", feedback: "En la posicion acostada de lado, mama y bebe se recuestan frente a frente. Es ideal para las tomas nocturnas o despues de una cesarea." },
     ],
-    incorrectAnswers: [
-      { text: "La leche materna pierde valor despues de 6 meses", feedback: "Esto es falso. La leche sigue siendo nutritiva, pero se complementa con otros alimentos." },
-      { text: "Hay madres que no producen suficiente leche", feedback: "La gran mayoria de madres produce suficiente leche. La produccion se regula por la demanda del bebe." },
-      { text: "Amamantar duele siempre", feedback: "El dolor no es normal. Con un buen agarre y posicion, la lactancia no debe causar dolor." },
-    ],
-    backgroundImage: "/images/fondo_2.png",
   },
   4: {
     gameType: "classify" as const,
@@ -191,6 +188,20 @@ export default async function LevelPage({
   const level = levelData[levelId as keyof typeof levelData]
   if (!level) {
     redirect("/game")
+  }
+
+  // Matching game (Posiciones de Lactancia)
+  if ("gameType" in level && level.gameType === "matching") {
+    return (
+      <MatchingGame
+        levelId={levelId}
+        userId={data.user.id}
+        title={level.title}
+        question={level.question}
+        pairs={level.matchingPairs}
+        backgroundImage={"backgroundImage" in level ? level.backgroundImage : undefined}
+      />
+    )
   }
 
   // Classify game (Mitos vs Verdades)

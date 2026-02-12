@@ -35,9 +35,9 @@ export default async function GamePage() {
     },
     {
       id: 3,
-      title: "Nivel 3: Mitos y Realidades",
-      description: "Distingue entre mitos y verdades",
-      icon: Trophy,
+      title: "Nivel 3: Posiciones de Lactancia",
+      description: "Identifica las posiciones para amamantar",
+      icon: Baby,
       color: "sky-blue",
       locked: profile?.level ? profile.level < 3 : true,
     },
