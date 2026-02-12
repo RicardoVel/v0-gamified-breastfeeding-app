@@ -106,13 +106,11 @@ export function MatchingGame({
 
   const finishGame = async () => {
     const total = shuffledPairs.length
+    const finalCorrect = correctCount
     let earnedStars = 0
-    if (correctCount + (selectedOption === currentPair.name ? 1 : 0) === total) earnedStars = 3
-    else if ((correctCount + (selectedOption === currentPair.name ? 1 : 0)) >= total * 0.75) earnedStars = 2
-    else if ((correctCount + (selectedOption === currentPair.name ? 1 : 0)) >= total * 0.5) earnedStars = 1
-
-    // Account for the last answer if it hasn't been counted yet
-    const finalCorrect = correctCount + (hasAnswered && selectedOption === currentPair.name ? 0 : 0)
+    if (finalCorrect === total) earnedStars = 3
+    else if (finalCorrect >= total * 0.75) earnedStars = 2
+    else if (finalCorrect >= total * 0.5) earnedStars = 1
 
     setStars(earnedStars)
     setIsCompleted(true)
