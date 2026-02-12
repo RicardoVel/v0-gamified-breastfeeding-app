@@ -2,7 +2,7 @@ import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Star, Trophy, Heart, Sparkles } from "lucide-react"
+import { Star, Trophy, Heart, Sparkles, ShieldCheck, Baby, BookOpen, Clock, Apple, Stethoscope } from "lucide-react"
 import Link from "next/link"
 
 export default async function GamePage() {
@@ -19,16 +19,16 @@ export default async function GamePage() {
   const levels = [
     {
       id: 1,
-      title: "Nivel 1: Beneficios del Bebé",
-      description: "Aprende cómo la leche materna ayuda al bebé",
+      title: "Nivel 1: Beneficios del Bebe",
+      description: "Aprende como la leche materna ayuda al bebe",
       icon: Heart,
       color: "pastel-pink",
       locked: false,
     },
     {
       id: 2,
-      title: "Nivel 2: Beneficios de la Mamá",
-      description: "Descubre los beneficios para la madre",
+      title: "Nivel 2: Mitos y Verdades",
+      description: "Clasifica mitos y verdades sobre la lactancia",
       icon: Sparkles,
       color: "soft-gold",
       locked: profile?.level ? profile.level < 2 : true,
@@ -40,6 +40,62 @@ export default async function GamePage() {
       icon: Trophy,
       color: "sky-blue",
       locked: profile?.level ? profile.level < 3 : true,
+    },
+    {
+      id: 4,
+      title: "Nivel 4: Posiciones de Lactancia",
+      description: "Conoce las posiciones correctas para amamantar",
+      icon: Baby,
+      color: "pastel-pink",
+      locked: profile?.level ? profile.level < 4 : true,
+    },
+    {
+      id: 5,
+      title: "Nivel 5: Alimentacion Complementaria",
+      description: "Aprende sobre la introduccion de alimentos",
+      icon: Apple,
+      color: "soft-gold",
+      locked: profile?.level ? profile.level < 5 : true,
+    },
+    {
+      id: 6,
+      title: "Nivel 6: Problemas Comunes",
+      description: "Identifica y resuelve problemas frecuentes",
+      icon: Stethoscope,
+      color: "sky-blue",
+      locked: profile?.level ? profile.level < 6 : true,
+    },
+    {
+      id: 7,
+      title: "Nivel 7: Derechos de la Mama",
+      description: "Conoce tus derechos durante la lactancia",
+      icon: ShieldCheck,
+      color: "pastel-pink",
+      locked: profile?.level ? profile.level < 7 : true,
+    },
+    {
+      id: 8,
+      title: "Nivel 8: Lactancia y Trabajo",
+      description: "Como mantener la lactancia al volver al trabajo",
+      icon: Clock,
+      color: "soft-gold",
+      locked: profile?.level ? profile.level < 8 : true,
+    },
+    {
+      id: 9,
+      title: "Nivel 9: Nutricion Materna",
+      description: "La alimentacion ideal durante la lactancia",
+      icon: BookOpen,
+      color: "sky-blue",
+      locked: profile?.level ? profile.level < 9 : true,
+    },
+    {
+      id: 10,
+      title: "Nivel 10: Experta en Lactancia",
+      description: "Demuestra todo lo que has aprendido",
+      icon: Trophy,
+      color: "soft-gold",
+      locked: profile?.level ? profile.level < 10 : true,
     },
   ]
 

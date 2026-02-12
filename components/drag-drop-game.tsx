@@ -88,7 +88,7 @@ export function DragDropGame({
     })
     feedbackTimeoutRef.current = setTimeout(() => {
       setFeedback((prev) => ({ ...prev, visible: false }))
-    }, 4000)
+    }, 7000)
   }
 
   // Shuffle items only once using useMemo with empty dependency
@@ -441,6 +441,43 @@ export function DragDropGame({
           )}
         </div>
 
+        {/* Mascot Feedback Bubble */}
+        {feedback.visible && (
+          <div 
+            className={`flex items-end gap-3 p-3 rounded-2xl shadow-lg transition-all animate-in slide-in-from-top-4 duration-300 ${
+              feedback.isCorrect 
+                ? "bg-green-50 border-2 border-green-300" 
+                : "bg-red-50 border-2 border-red-300"
+            }`}
+          >
+            <Image
+              src="/images/mascota-gota.png"
+              alt="Mascota Gota de Leche"
+              width={60}
+              height={60}
+              className="object-contain flex-shrink-0"
+            />
+            <div className="flex-1 min-w-0">
+              <p className={`text-sm font-bold mb-0.5 ${
+                feedback.isCorrect ? "text-green-700" : "text-red-700"
+              }`}>
+                {feedback.isCorrect ? "Muy bien!" : "No es correcto"}
+              </p>
+              <p className={`text-xs leading-relaxed ${
+                feedback.isCorrect ? "text-green-600" : "text-red-600"
+              }`}>
+                {feedback.message}
+              </p>
+            </div>
+            <button
+              onClick={() => setFeedback((prev) => ({ ...prev, visible: false }))}
+              className="flex-shrink-0 p-1 rounded-full hover:bg-black/10"
+            >
+              <X size={14} className="text-muted-foreground" />
+            </button>
+          </div>
+        )}
+
         {/* Available Items */}
         <Card className="rounded-2xl p-4 shadow-lg bg-white/95 backdrop-blur-sm">
           <h3 className="text-base font-semibold mb-3 text-foreground">
@@ -484,43 +521,6 @@ export function DragDropGame({
             ))}
           </div>
         </Card>
-
-        {/* Mascot Feedback Bubble */}
-        {feedback.visible && (
-          <div 
-            className={`flex items-end gap-3 p-3 rounded-2xl shadow-lg transition-all animate-in slide-in-from-bottom-4 duration-300 ${
-              feedback.isCorrect 
-                ? "bg-green-50 border-2 border-green-300" 
-                : "bg-red-50 border-2 border-red-300"
-            }`}
-          >
-            <Image
-              src="/images/mascota-gota.png"
-              alt="Mascota Gota de Leche"
-              width={60}
-              height={60}
-              className="object-contain flex-shrink-0"
-            />
-            <div className="flex-1 min-w-0">
-              <p className={`text-sm font-bold mb-0.5 ${
-                feedback.isCorrect ? "text-green-700" : "text-red-700"
-              }`}>
-                {feedback.isCorrect ? "Muy bien!" : "No es correcto"}
-              </p>
-              <p className={`text-xs leading-relaxed ${
-                feedback.isCorrect ? "text-green-600" : "text-red-600"
-              }`}>
-                {feedback.message}
-              </p>
-            </div>
-            <button
-              onClick={() => setFeedback((prev) => ({ ...prev, visible: false }))}
-              className="flex-shrink-0 p-1 rounded-full hover:bg-black/10"
-            >
-              <X size={14} className="text-muted-foreground" />
-            </button>
-          </div>
-        )}
 
         {/* Submit Button */}
         <div className="flex gap-2">

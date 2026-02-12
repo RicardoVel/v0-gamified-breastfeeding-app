@@ -88,7 +88,7 @@ export function ClassifyGame({
     setFeedback({ message, isCorrect, visible: true })
     feedbackTimeoutRef.current = setTimeout(() => {
       setFeedback((prev) => ({ ...prev, visible: false }))
-    }, 3500)
+    }, 7000)
   }
 
   // Place item in a zone
@@ -117,7 +117,7 @@ export function ClassifyGame({
     if (newPlacedItems.length === allItems.length) {
       setTimeout(() => {
         finishGame(newPlacedItems)
-      }, 1800)
+      }, 5000)
     }
   }
 
@@ -298,7 +298,7 @@ export function ClassifyGame({
                     item.category === "mito" ? "border-green-400" : "border-red-400"
                   }`}>
                   {item.image && (
-                    <Image src={item.image} alt={item.text} width={55} height={55} className="object-contain" />
+                    <Image src={item.image || "/placeholder.svg"} alt={item.text} width={55} height={55} className="object-contain" />
                   )}
                 </div>
               ))}
@@ -320,7 +320,7 @@ export function ClassifyGame({
                     item.category === "verdad" ? "border-green-400" : "border-red-400"
                   }`}>
                   {item.image && (
-                    <Image src={item.image} alt={item.text} width={55} height={55} className="object-contain" />
+                    <Image src={item.image || "/placeholder.svg"} alt={item.text} width={55} height={55} className="object-contain" />
                   )}
                 </div>
               ))}
@@ -328,6 +328,24 @@ export function ClassifyGame({
           </div>
 
         </div>
+
+        {/* Feedback Mascot */}
+        {feedback.visible && (
+          <div className={`flex items-end gap-3 p-3 rounded-2xl shadow-lg animate-in slide-in-from-top-4 duration-300 ${
+            feedback.isCorrect ? "bg-green-50 border-2 border-green-300" : "bg-red-50 border-2 border-red-300"
+          }`}>
+            <Image src="/images/mascota-triste.png" alt="Mascota" width={55} height={55} className="object-contain flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className={`text-sm font-bold mb-0.5 ${feedback.isCorrect ? "text-green-700" : "text-red-700"}`}>
+                {feedback.isCorrect ? "Bien hecho!" : "Sigue intentando"}
+              </p>
+              <p className={`text-xs leading-relaxed ${feedback.isCorrect ? "text-green-600" : "text-red-600"}`}>{feedback.message}</p>
+            </div>
+            <button onClick={() => setFeedback((p) => ({ ...p, visible: false }))} className="flex-shrink-0 p-1 rounded-full hover:bg-black/10">
+              <X size={14} className="text-muted-foreground" />
+            </button>
+          </div>
+        )}
 
         {/* Available Cards */}
         {availableItems.length > 0 && (
@@ -350,7 +368,7 @@ export function ClassifyGame({
 
                   <div className="flex flex-col items-center gap-1">
                     {item.image && (
-                      <Image src={item.image} alt={item.text} width={70} height={70} className="object-contain" />
+                      <Image src={item.image || "/placeholder.svg"} alt={item.text} width={70} height={70} className="object-contain" />
                     )}
                     <span className="text-xs font-medium leading-tight">{item.text}</span>
                   </div>
@@ -359,24 +377,6 @@ export function ClassifyGame({
               ))}
             </div>
           </Card>
-        )}
-
-        {/* Feedback Mascot */}
-        {feedback.visible && (
-          <div className={`flex items-end gap-3 p-3 rounded-2xl shadow-lg ${
-            feedback.isCorrect ? "bg-green-50 border-2 border-green-300" : "bg-red-50 border-2 border-red-300"
-          }`}>
-            <Image src="/images/mascota-gota.png" alt="Mascota" width={55} height={55} />
-            <div>
-              <p className={`text-sm font-bold ${feedback.isCorrect ? "text-green-700" : "text-red-700"}`}>
-                {feedback.isCorrect ? "¡Bien hecho!" : "Sigue intentando"}
-              </p>
-              <p className="text-xs">{feedback.message}</p>
-            </div>
-            <button onClick={() => setFeedback((p) => ({ ...p, visible: false }))}>
-              <X size={14} />
-            </button>
-          </div>
         )}
 
         <Button onClick={() => router.push("/game")} variant="outline" className="w-full rounded-xl">
