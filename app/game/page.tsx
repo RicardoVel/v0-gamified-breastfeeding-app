@@ -43,9 +43,9 @@ export default async function GamePage() {
     },
     {
       id: 4,
-      title: "Nivel 4: Posiciones de Lactancia",
-      description: "Conoce las posiciones correctas para amamantar",
-      icon: Baby,
+      title: "Nivel 4: Agarre Correcto",
+      description: "Identifica las partes del agarre al pecho",
+      icon: Heart,
       color: "pastel-pink",
       locked: profile?.level ? profile.level < 4 : true,
     },

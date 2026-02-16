@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { DragDropGame } from "@/components/drag-drop-game"
 import { ClassifyGame } from "@/components/classify-game"
 import { MatchingGame } from "@/components/matching-game"
+import { LabelGame } from "@/components/label-game"
 
 const levelData = {
   1: {
@@ -56,19 +57,17 @@ const levelData = {
     ],
   },
   4: {
-    gameType: "classify" as const,
-    title: "Posiciones de Lactancia",
-    question: "Clasifica: posicion CORRECTA o INCORRECTA para amamantar?",
-    backgroundImage: "/images/fondo_2.png",
-    classifyItems: [
-      { text: "Posicion de cuna: bebe acostado frente al pecho", category: "verdad" as const, feedback: "La posicion de cuna es la mas comun. El bebe descansa sobre el antebrazo de la mama, con su cabeza en el pliegue del codo." },
-      { text: "Posicion de balon de futbol: bebe bajo el brazo", category: "verdad" as const, feedback: "Excelente para mamas con cesarea. El bebe va bajo el brazo con las piernas hacia atras, apoyado en una almohada." },
-      { text: "Posicion acostada de lado: mama y bebe recostados", category: "verdad" as const, feedback: "Ideal para alimentar de noche o despues de una cesarea. Ambos se recuestan de lado, frente a frente." },
-      { text: "Posicion biologica: bebe sobre el pecho de mama", category: "verdad" as const, feedback: "El bebe se coloca boca abajo sobre el pecho de la mama reclinada. Favorece el agarre instintivo del bebe." },
-      { text: "Bebe mirando hacia el techo mientras come", category: "mito" as const, feedback: "El bebe debe estar de frente al pecho, con su nariz a la altura del pezon. Mirando al techo dificulta el agarre." },
-      { text: "Inclinar al bebe hacia abajo al amamantar", category: "mito" as const, feedback: "El bebe debe estar a la misma altura del pecho, con la cabeza ligeramente extendida. Inclinarlo puede causar ahogamiento." },
-      { text: "Amamantar siempre sentada en posicion rigida", category: "mito" as const, feedback: "No existe una unica posicion. La mama debe estar comoda y relajada, puede amamantar sentada, acostada o reclinada." },
-      { text: "El bebe debe girar la cabeza para alcanzar el pecho", category: "mito" as const, feedback: "El bebe debe estar alineado: oreja, hombro y cadera en linea recta. Girar la cabeza dificulta tragar y causa dolor." },
+    gameType: "label" as const,
+    title: "Agarre Correcto",
+    question: "Coloca cada etiqueta en la zona correcta del agarre",
+    backgroundImage: "/images/fondo_3.png",
+    diagramImage: "/images/nivel4/agarre-limpio.png",
+    labelZones: [
+      { id: "boca", label: "Boca bien abierta", x: 28, y: 22, feedback: "El bebe debe abrir bien la boca para lograr un agarre profundo que abarque gran parte de la areola, no solo el pezon." },
+      { id: "areola", label: "Abarca gran parte de la areola", x: 62, y: 38, feedback: "Un buen agarre cubre la mayor parte de la areola. Se debe ver mas areola por arriba de la boca del bebe que por abajo." },
+      { id: "barbilla", label: "Barbilla tocando el pecho", x: 65, y: 60, feedback: "La barbilla del bebe debe estar firmemente pegada al pecho de la mama. Esto asegura un agarre profundo y efectivo." },
+      { id: "nariz", label: "Nariz despejada", x: 68, y: 50, feedback: "La nariz del bebe debe quedar libre y despejada para poder respirar con facilidad mientras amamanta." },
+      { id: "sosten", label: "Sosten en C", x: 70, y: 78, feedback: "La mama sostiene el pecho con la mano en forma de C: el pulgar arriba y los demas dedos abajo, sin presionar la areola." },
     ],
   },
   5: {
@@ -188,6 +187,21 @@ export default async function LevelPage({
   const level = levelData[levelId as keyof typeof levelData]
   if (!level) {
     redirect("/game")
+  }
+
+  // Label game (Agarre Correcto)
+  if ("gameType" in level && level.gameType === "label") {
+    return (
+      <LabelGame
+        levelId={levelId}
+        userId={data.user.id}
+        title={level.title}
+        question={level.question}
+        diagramImage={level.diagramImage}
+        zones={level.labelZones}
+        backgroundImage={"backgroundImage" in level ? level.backgroundImage : undefined}
+      />
+    )
   }
 
   // Matching game (Posiciones de Lactancia)
