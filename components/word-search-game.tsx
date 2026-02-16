@@ -477,19 +477,19 @@ export function WordSearchGame({
         {/* Grid */}
         <div className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-white/60">
           {gridBackgroundImage && (
-            <div className="absolute inset-0">
+            <div className="absolute inset-0 z-0">
               <Image
                 src={gridBackgroundImage}
                 alt=""
                 fill
-                className="object-cover opacity-20"
+                className="object-cover opacity-30"
                 sizes="(max-width: 768px) 100vw, 500px"
               />
             </div>
           )}
           <div
             ref={gridRef}
-            className="relative grid select-none touch-none"
+            className="relative z-10 grid select-none touch-none"
             style={{ gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)` }}
             onMouseDown={handleStart}
             onMouseMove={handleMove}
