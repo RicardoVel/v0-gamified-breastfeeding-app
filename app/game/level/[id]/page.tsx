@@ -89,10 +89,10 @@ const levelData = {
     question: "Ordena los pasos correctos para aliviar la congestion mamaria",
     backgroundImage: "/images/fondo_6.png",
     orderSteps: [
-      { id: "calor", text: "Aplicar calor local antes de amamantar", correctOrder: 1, feedback: "El calor ayuda a dilatar los conductos de leche y facilita que la leche fluya con mayor facilidad antes de la toma." },
+      { id: "calor", text: "Aplicar calor local", correctOrder: 1, feedback: "El calor ayuda a dilatar los conductos de leche y facilita que la leche fluya con mayor facilidad antes de la toma." },
       { id: "extraer", text: "Extraer un poco de leche", correctOrder: 2, feedback: "Extraer un poco de leche manualmente o con sacaleches alivia la presion y ablanda la areola, facilitando el agarre del bebe." },
       { id: "amamantar", text: "Amamantar al bebe", correctOrder: 3, feedback: "Una vez que el pecho esta mas blando, el bebe puede agarrarse mejor y vaciar el pecho de forma efectiva, aliviando la congestion." },
-      { id: "frio", text: "Aplicar frio local despues", correctOrder: 4, feedback: "El frio despues de amamantar reduce la inflamacion y el dolor. Se aplica con compresas frias o bolsas de gel por 15-20 minutos." },
+      { id: "frio", text: "Aplicar frio local", correctOrder: 4, feedback: "El frio despues de amamantar reduce la inflamacion y el dolor. Se aplica con compresas frias o bolsas de gel por 15-20 minutos." },
     ],
   },
   7: {
