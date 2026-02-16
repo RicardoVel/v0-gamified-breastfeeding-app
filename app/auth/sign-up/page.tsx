@@ -46,7 +46,7 @@ export default function SignUpPage() {
         window.location.href = "/game"
       } else {
         // Email confirmation is required
-        window.location.href = "/auth/verify-email"
+        window.location.href = `/auth/verify-email?email=${encodeURIComponent(email)}`
       }
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "Ocurrió un error")
