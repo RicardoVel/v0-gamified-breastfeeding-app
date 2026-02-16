@@ -100,28 +100,28 @@ export default async function GamePage() {
   ]
 
   return (
-    <div className="min-h-screen p-3 sm:p-4">
-      <div className="max-w-2xl mx-auto space-y-4">
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-4 shadow-xl">
-          <div className="space-y-3">
+    <div className="min-h-screen p-2 sm:p-3 md:p-4 overflow-x-hidden">
+      <div className="max-w-2xl mx-auto space-y-4 w-full">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-xl overflow-hidden">
+          <div className="space-y-2 sm:space-y-3">
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-balance">¡Hola, {profile?.display_name || "Mamá"}!</h1>
-              <p className="text-xs sm:text-sm text-muted-foreground">Continúa tu aventura de aprendizaje</p>
+              <h1 className="text-lg sm:text-2xl font-bold text-balance truncate">¡Hola, {profile?.display_name || "Mama"}!</h1>
+              <p className="text-[10px] sm:text-sm text-muted-foreground">Continua tu aventura de aprendizaje</p>
             </div>
-            <div className="flex gap-4 justify-center">
-              <div className="text-center">
-                <div className="text-xl font-bold text-soft-gold flex items-center gap-1 justify-center">
-                  <Star size={20} fill="currentColor" />
+            <div className="flex gap-3 sm:gap-4 justify-center">
+              <div className="text-center min-w-0">
+                <div className="text-lg sm:text-xl font-bold text-soft-gold flex items-center gap-1 justify-center">
+                  <Star size={16} fill="currentColor" className="flex-shrink-0" />
                   {profile?.total_stars || 0}
                 </div>
                 <p className="text-[10px] text-muted-foreground">Estrellas</p>
               </div>
-              <div className="text-center">
-                <div className="text-xl font-bold text-sky-blue">Nivel {profile?.level || 1}</div>
+              <div className="text-center min-w-0">
+                <div className="text-lg sm:text-xl font-bold text-sky-blue">Nivel {profile?.level || 1}</div>
                 <p className="text-[10px] text-muted-foreground">Actual</p>
               </div>
-              <div className="text-center">
-                <div className="text-xl font-bold text-pastel-pink">{profile?.experience_points || 0}</div>
+              <div className="text-center min-w-0">
+                <div className="text-lg sm:text-xl font-bold text-pastel-pink">{profile?.experience_points || 0}</div>
                 <p className="text-[10px] text-muted-foreground">XP</p>
               </div>
             </div>
@@ -136,24 +136,24 @@ export default async function GamePage() {
               return (
                 <Card
                   key={level.id}
-                  className={`rounded-3xl p-4 shadow-lg border-2 transition-all ${
+                  className={`rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-lg border-2 transition-all overflow-hidden ${
                     level.locked ? "opacity-50 cursor-not-allowed" : "hover:shadow-xl"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className={`p-3 rounded-2xl bg-${level.color}/20 flex-shrink-0`}>
-                      <Icon className={`text-${level.color}`} size={28} />
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className={`p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-${level.color}/20 flex-shrink-0`}>
+                      <Icon className={`text-${level.color}`} size={22} />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-sm sm:text-base font-bold mb-0.5 truncate">{level.title}</h3>
-                      <p className="text-xs text-muted-foreground text-pretty line-clamp-2">{level.description}</p>
+                    <div className="flex-1 min-w-0 overflow-hidden">
+                      <h3 className="text-xs sm:text-sm font-bold mb-0.5 truncate">{level.title}</h3>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-2">{level.description}</p>
                     </div>
                     {level.locked ? (
-                      <Button disabled size="sm" className="rounded-xl text-xs flex-shrink-0">
+                      <Button disabled size="sm" className="rounded-xl text-[10px] sm:text-xs px-2 sm:px-3 flex-shrink-0 h-8">
                         Bloqueado
                       </Button>
                     ) : (
-                      <Button asChild size="sm" className="rounded-xl text-xs flex-shrink-0">
+                      <Button asChild size="sm" className="rounded-xl text-[10px] sm:text-xs px-2 sm:px-3 flex-shrink-0 h-8">
                         <Link href={`/game/level/${level.id}`}>Jugar</Link>
                       </Button>
                     )}
