@@ -49,7 +49,14 @@ export default function SignUpPage() {
         window.location.href = `/auth/verify-email?email=${encodeURIComponent(email)}`
       }
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "Ocurrió un error")
+      const msg = error instanceof Error ? error.message : "Ocurrio un error"
+      if (msg.toLowerCase().includes("rate limit")) {
+        setError("Se han enviado demasiados correos. Por favor espera unos minutos antes de intentar nuevamente.")
+      } else if (msg.toLowerCase().includes("already registered")) {
+        setError("Este correo ya esta registrado. Intenta iniciar sesion.")
+      } else {
+        setError(msg)
+      }
       setIsLoading(false)
     }
   }

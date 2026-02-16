@@ -47,7 +47,22 @@ function VerifyEmailContent() {
         })
       }, 1000)
     } catch (err: unknown) {
-      setResendError(err instanceof Error ? err.message : "No se pudo reenviar el correo")
+      const msg = err instanceof Error ? err.message : "No se pudo reenviar el correo"
+      if (msg.toLowerCase().includes("rate limit")) {
+        setResendError("Se han enviado demasiados correos. Por favor espera unos minutos antes de intentar nuevamente.")
+        setCooldown(120)
+        const timer = setInterval(() => {
+          setCooldown((prev) => {
+            if (prev <= 1) {
+              clearInterval(timer)
+              return 0
+            }
+            return prev - 1
+          })
+        }, 1000)
+      } else {
+        setResendError(msg)
+      }
     } finally {
       setIsResending(false)
     }
