@@ -2,8 +2,9 @@ import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Star, Trophy, Award } from "lucide-react"
+import { Star, Trophy, Award, MailWarning } from "lucide-react"
 import { LogoutButton } from "@/components/logout-button"
+import { VerifyEmailBanner } from "@/components/verify-email-banner"
 import Link from "next/link"
 
 export default async function ProfilePage() {
@@ -29,10 +30,16 @@ export default async function ProfilePage() {
 
   const completedLevels = gameProgress?.filter((p) => p.completed).length || 0
   const totalGames = gameProgress?.length || 0
+  const isEmailVerified = !!data.user.email_confirmed_at
 
   return (
     <div className="min-h-screen p-3 sm:p-4">
       <div className="max-w-2xl mx-auto space-y-4">
+        {/* Email Verification Banner */}
+        {!isEmailVerified && data.user.email && (
+          <VerifyEmailBanner email={data.user.email} />
+        )}
+
         {/* Profile Header */}
         <Card className="rounded-3xl p-5 shadow-xl bg-gradient-to-br from-white to-primary/10">
           <div className="flex items-start justify-between gap-3">
