@@ -91,8 +91,8 @@ export default async function GamePage() {
     },
     {
       id: 10,
-      title: "Nivel 10: Experta en Lactancia",
-      description: "Demuestra todo lo que has aprendido",
+      title: "Nivel 10: Signos de Buena Alimentacion",
+      description: "Identifica los signos de un bebe bien alimentado",
       icon: Trophy,
       color: "soft-gold",
       locked: profile?.level ? profile.level < 10 : true,
