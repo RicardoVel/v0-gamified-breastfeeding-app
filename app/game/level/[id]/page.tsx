@@ -6,6 +6,7 @@ import { MatchingGame } from "@/components/matching-game"
 import { LabelGame } from "@/components/label-game"
 import { MemoryGame } from "@/components/memory-game"
 import { OrderStepsGame } from "@/components/order-steps-game"
+import { WordSearchGame } from "@/components/word-search-game"
 
 const levelData = {
   1: {
@@ -96,19 +97,17 @@ const levelData = {
     ],
   },
   7: {
-    title: "Derechos de la Mama",
-    question: "Arrastra los DERECHOS reales de la madre lactante:",
-    backgroundImage: "/images/fondo_2.png",
-    correctAnswers: [
-      { text: "Derecho a amamantar en espacios publicos", feedback: "Amamantar en publico es un derecho protegido por la ley. Nadie puede prohibirte alimentar a tu bebe." },
-      { text: "Derecho a tiempo de lactancia en el trabajo", feedback: "La ley garantiza pausas para amamantar o extraer leche durante la jornada laboral." },
-      { text: "Derecho a un espacio adecuado para extraer leche", feedback: "Tu empleador debe proporcionarte un espacio privado, limpio y comodo, diferente al bano." },
-      { text: "Derecho a informacion sobre lactancia", feedback: "Toda madre tiene derecho a recibir informacion clara y basada en evidencia sobre lactancia materna." },
-    ],
-    incorrectAnswers: [
-      { text: "Obligacion de dejar de amamantar al ano", feedback: "No existe tal obligacion. La OMS recomienda amamantar hasta los 2 anos o mas si mama y bebe lo desean." },
-      { text: "El padre decide cuando dejar la lactancia", feedback: "La decision de amamantar es de la madre y el bebe. Nadie mas debe imponer cuando terminar." },
-      { text: "El pediatra puede prohibir la lactancia", feedback: "Son muy raras las condiciones medicas que impiden la lactancia. La mayoria de los medicamentos son compatibles." },
+    gameType: "wordsearch" as const,
+    title: "Sopa de Letras: Cuidados Mamarios",
+    question: "Encuentra las palabras ocultas relacionadas con el cuidado mamario",
+    backgroundImage: "/images/fondo_6.png",
+    gridBackgroundImage: "/images/nivel7/fondo-sopa.png",
+    searchWords: [
+      { word: "MASAJE", displayName: "Masaje", feedback: "El masaje suave en el pecho antes de amamantar ayuda a estimular el flujo de leche y prevenir obstrucciones en los conductos." },
+      { word: "EXTRACCION", displayName: "Extraccion", feedback: "La extraccion de leche (manual o con sacaleches) ayuda a aliviar la congestion, mantener la produccion y crear un banco de leche." },
+      { word: "HIDRATACION", displayName: "Hidratacion", feedback: "Mantenerse bien hidratada es esencial para la produccion de leche. Se recomienda beber al menos 2 litros de agua al dia." },
+      { word: "COMPRESAS", displayName: "Compresas frias", feedback: "Las compresas frias aplicadas despues de amamantar ayudan a reducir la inflamacion y aliviar el dolor en pechos congestionados." },
+      { word: "DIETA", displayName: "Dieta adecuada", feedback: "Una dieta equilibrada y nutritiva es fundamental para la mama lactante, asegurando que la leche contenga todos los nutrientes necesarios." },
     ],
   },
   8: {
@@ -180,6 +179,21 @@ export default async function LevelPage({
   const level = levelData[levelId as keyof typeof levelData]
   if (!level) {
     redirect("/game")
+  }
+
+  // Word search game (Sopa de Letras)
+  if ("gameType" in level && level.gameType === "wordsearch") {
+    return (
+      <WordSearchGame
+        levelId={levelId}
+        userId={data.user.id}
+        title={level.title}
+        question={level.question}
+        words={level.searchWords}
+        gridBackgroundImage={"gridBackgroundImage" in level ? level.gridBackgroundImage : undefined}
+        backgroundImage={"backgroundImage" in level ? level.backgroundImage : undefined}
+      />
+    )
   }
 
   // Order steps game (Congestion Mamaria)

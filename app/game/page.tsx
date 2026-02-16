@@ -67,8 +67,8 @@ export default async function GamePage() {
     },
     {
       id: 7,
-      title: "Nivel 7: Derechos de la Mama",
-      description: "Conoce tus derechos durante la lactancia",
+      title: "Nivel 7: Sopa de Letras",
+      description: "Encuentra palabras sobre cuidados mamarios",
       icon: ShieldCheck,
       color: "pastel-pink",
       locked: profile?.level ? profile.level < 7 : true,
