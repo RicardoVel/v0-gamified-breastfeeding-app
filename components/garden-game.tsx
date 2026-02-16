@@ -261,11 +261,11 @@ export function GardenGame({
             currentFeedback.isCorrect ? "bg-emerald-50/95 border border-emerald-200" : "bg-rose-50/95 border border-rose-200"
           }`}>
             <Image
-              src="/images/Mascota.png"
+              src="/images/mascota-gota.png"
               alt="Mascota"
-              width={36}
-              height={36}
-              className="rounded-full flex-shrink-0"
+              width={40}
+              height={40}
+              className="object-contain flex-shrink-0"
             />
             <p className={`text-xs leading-relaxed ${currentFeedback.isCorrect ? "text-emerald-800" : "text-rose-800"}`}>
               {currentFeedback.text}
@@ -275,7 +275,7 @@ export function GardenGame({
 
         {/* Cards */}
         {!gameComplete && (
-          <div className="flex flex-col gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {availableCards.map((card) => (
               <div
                 key={card.id}
@@ -284,20 +284,14 @@ export function GardenGame({
                 onTouchStart={(e) => handleTouchStart(card.id, e)}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
-                className={`flex items-center gap-3 bg-white/90 backdrop-blur-sm rounded-xl p-2 shadow-md cursor-grab active:cursor-grabbing transition-all hover:shadow-lg hover:scale-[1.01] ${
+                className={`flex flex-col items-center bg-white/90 backdrop-blur-sm rounded-xl p-2 shadow-md cursor-grab active:cursor-grabbing transition-all hover:shadow-lg hover:scale-[1.02] ${
                   wrongCard === card.id ? "animate-shake border-2 border-rose-400" : "border border-white/50"
                 } ${touchDragCard === card.id ? "opacity-50 scale-95" : ""}`}
               >
-                <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0">
-                  <Image src={card.image} alt={card.text} fill className="object-cover" sizes="56px" />
+                <div className="relative w-full aspect-square rounded-lg overflow-hidden mb-1">
+                  <Image src={card.image} alt={card.text} fill className="object-cover" sizes="(max-width: 640px) 45vw, 150px" />
                 </div>
-                <span className="text-sm font-medium text-foreground flex-1">{card.text}</span>
-                <div className="text-muted-foreground">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="9" cy="5" r="1" /><circle cx="9" cy="12" r="1" /><circle cx="9" cy="19" r="1" />
-                    <circle cx="15" cy="5" r="1" /><circle cx="15" cy="12" r="1" /><circle cx="15" cy="19" r="1" />
-                  </svg>
-                </div>
+                <span className="text-[11px] font-semibold text-foreground text-center leading-tight">{card.text}</span>
               </div>
             ))}
           </div>
@@ -329,11 +323,11 @@ export function GardenGame({
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
             <div className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center">
               <Image
-                src="/images/Mascota.png"
+                src="/images/mascota-gota.png"
                 alt="Mascota"
                 width={80}
                 height={80}
-                className="mx-auto mb-3 rounded-full"
+                className="mx-auto mb-3 object-contain"
               />
 
               {/* Garden final state */}
@@ -376,15 +370,12 @@ export function GardenGame({
                 <p>Errores: {errorCount}</p>
               </div>
 
-              <div className="flex gap-2">
-                <Button variant="outline" onClick={() => router.push("/game")} className="flex-1 rounded-xl">
-                  Volver
+              <div className="space-y-2 pt-2">
+                <Button onClick={() => router.push("/game")} className="w-full rounded-xl">
+                  Volver a Niveles
                 </Button>
-                <Button
-                  onClick={() => router.push(`/game/level/${levelId + 1}`)}
-                  className="flex-1 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white"
-                >
-                  Siguiente
+                <Button onClick={() => router.push("/profile")} variant="outline" className="w-full rounded-xl bg-transparent">
+                  Ver Mi Perfil
                 </Button>
               </div>
             </div>
