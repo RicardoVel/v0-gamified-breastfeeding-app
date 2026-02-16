@@ -175,29 +175,30 @@ export function GardenGame({
   const availableCards = shuffledCards.filter(c => !placedCards.includes(c.id))
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* Background */}
-      {backgroundImage && (
-        <div className="fixed inset-0 z-0">
-          <Image src={backgroundImage} alt="" fill className="object-cover" priority sizes="100vw" />
-          <div className="absolute inset-0 bg-black/10" />
-        </div>
-      )}
-
-      <div className="relative z-10 flex flex-col min-h-screen p-4 pb-6">
+    <div
+      className="min-h-screen p-3 md:p-6 overflow-x-hidden"
+      style={backgroundImage ? {
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      } : undefined}
+    >
+      <div className="max-w-lg mx-auto space-y-3">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-4">
-          <Button variant="ghost" size="icon" onClick={() => router.push("/game")} className="bg-white/80 backdrop-blur-sm rounded-full shadow-md h-10 w-10">
-            <ArrowLeft size={20} />
-          </Button>
-          <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl px-4 py-2 shadow-md">
-            <h1 className="text-base font-bold text-foreground">{title}</h1>
-            <p className="text-xs text-muted-foreground">{question}</p>
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-3 shadow-lg">
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={() => router.push("/game")} className="bg-white/80 rounded-full shadow-sm h-8 w-8 flex-shrink-0">
+              <ArrowLeft size={16} />
+            </Button>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-base font-bold text-foreground truncate">{title}</h1>
+              <p className="text-xs text-muted-foreground">{question}</p>
+            </div>
           </div>
         </div>
 
         {/* Garden Image */}
-        <div className="relative mx-auto w-full max-w-xs aspect-square mb-4 rounded-2xl overflow-hidden shadow-lg border-2 border-white/50">
+        <div className="relative mx-auto w-full max-w-[220px] sm:max-w-xs aspect-square rounded-2xl overflow-hidden shadow-lg border-2 border-white/50">
           {gardenImages.map((img, i) => (
             <div
               key={img}
@@ -219,22 +220,22 @@ export function GardenGame({
         </div>
 
         {/* Drop Zones */}
-        <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="grid grid-cols-2 gap-2">
           {/* Favorece */}
           <div
             ref={favorZoneRef}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDropOnZone(e, true)}
-            className={`rounded-2xl border-2 border-dashed p-3 text-center transition-all min-h-[80px] flex flex-col items-center justify-center ${
+            className={`rounded-2xl border-2 border-dashed p-2 sm:p-3 text-center transition-all min-h-[70px] flex flex-col items-center justify-center ${
               draggingCard || touchDragCard
                 ? "border-emerald-400 bg-emerald-50/90 scale-[1.02] shadow-lg"
                 : "border-emerald-300 bg-emerald-50/70"
             }`}
           >
-            <div className="w-8 h-8 rounded-full bg-emerald-200 flex items-center justify-center mb-1">
-              <Check size={16} className="text-emerald-700" />
+            <div className="w-7 h-7 rounded-full bg-emerald-200 flex items-center justify-center mb-1">
+              <Check size={14} className="text-emerald-700" />
             </div>
-            <span className="text-xs font-bold text-emerald-700">Favorece la lactancia</span>
+            <span className="text-[11px] sm:text-xs font-bold text-emerald-700 leading-tight">Favorece la lactancia</span>
           </div>
 
           {/* No favorece */}
@@ -242,16 +243,16 @@ export function GardenGame({
             ref={noFavorZoneRef}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDropOnZone(e, false)}
-            className={`rounded-2xl border-2 border-dashed p-3 text-center transition-all min-h-[80px] flex flex-col items-center justify-center ${
+            className={`rounded-2xl border-2 border-dashed p-2 sm:p-3 text-center transition-all min-h-[70px] flex flex-col items-center justify-center ${
               draggingCard || touchDragCard
                 ? "border-rose-400 bg-rose-50/90 scale-[1.02] shadow-lg"
                 : "border-rose-300 bg-rose-50/70"
             }`}
           >
-            <div className="w-8 h-8 rounded-full bg-rose-200 flex items-center justify-center mb-1">
-              <X size={16} className="text-rose-700" />
+            <div className="w-7 h-7 rounded-full bg-rose-200 flex items-center justify-center mb-1">
+              <X size={14} className="text-rose-700" />
             </div>
-            <span className="text-xs font-bold text-rose-700">No favorece</span>
+            <span className="text-[11px] sm:text-xs font-bold text-rose-700 leading-tight">No favorece</span>
           </div>
         </div>
 
@@ -318,10 +319,19 @@ export function GardenGame({
           </div>
         )}
 
-        {/* Results */}
-        {showResults && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-            <div className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center">
+        {/* Exit button */}
+        {!gameComplete && (
+          <Button onClick={() => router.push("/game")} variant="outline" className="w-full rounded-xl bg-white/90">
+            Salir
+          </Button>
+        )}
+
+      </div>
+
+      {/* Results Modal */}
+      {showResults && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl p-5 sm:p-6 max-w-sm w-full shadow-2xl text-center mx-3">
               <Image
                 src="/images/mascota-gota.png"
                 alt="Mascota"
@@ -378,10 +388,9 @@ export function GardenGame({
                   Ver Mi Perfil
                 </Button>
               </div>
-            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -219,14 +219,14 @@ export function LabelGame({
 
   return (
     <div
-      className="min-h-screen p-3 md:p-6"
+      className="min-h-screen p-2 sm:p-3 md:p-6 overflow-x-hidden"
       style={backgroundImage ? {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       } : undefined}
     >
-      <div className="max-w-lg mx-auto space-y-3">
+      <div className="max-w-lg mx-auto space-y-3 w-full">
 
         {/* Header */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-3 shadow-lg">

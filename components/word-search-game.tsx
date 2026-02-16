@@ -413,14 +413,14 @@ export function WordSearchGame({
 
   return (
     <div
-      className="min-h-screen p-3 md:p-6"
+      className="min-h-screen p-2 sm:p-3 md:p-6 overflow-x-hidden"
       style={backgroundImage ? {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       } : undefined}
     >
-      <div className="max-w-lg mx-auto space-y-3">
+      <div className="max-w-lg mx-auto space-y-3 w-full">
 
         {/* Header */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-3 shadow-lg">
@@ -475,7 +475,7 @@ export function WordSearchGame({
         )}
 
         {/* Grid */}
-        <div className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-white/60">
+        <div className="relative rounded-2xl overflow-hidden shadow-xl border-2 sm:border-4 border-white/60 w-full max-w-full">
           {gridBackgroundImage && (
             <div className="absolute inset-0 z-0">
               <Image
@@ -510,7 +510,7 @@ export function WordSearchGame({
                 return (
                   <div
                     key={key}
-                    className={`aspect-square flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-150 cursor-pointer ${
+                    className={`aspect-square flex items-center justify-center text-[10px] sm:text-xs md:text-sm font-bold transition-all duration-150 cursor-pointer ${
                       isFound
                         ? `${foundColor || "bg-emerald-300/60"} text-foreground`
                         : isSelected

@@ -308,7 +308,7 @@ export function DragDropGame({
 
   return (
     <div 
-      className="min-h-screen p-3 md:p-6 relative"
+      className="min-h-screen p-2 sm:p-3 md:p-6 relative overflow-x-hidden"
       style={backgroundImage ? {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
@@ -316,7 +316,7 @@ export function DragDropGame({
         backgroundRepeat: 'no-repeat',
       } : undefined}
     >
-      <div className="max-w-lg mx-auto space-y-4">
+      <div className="max-w-lg mx-auto space-y-4 w-full">
         {/* Header */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
           <h1 className="text-xl font-bold mb-1 text-foreground">{title}</h1>
