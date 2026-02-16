@@ -51,9 +51,9 @@ export default async function GamePage() {
     },
     {
       id: 5,
-      title: "Nivel 5: Alimentacion Complementaria",
-      description: "Aprende sobre la introduccion de alimentos",
-      icon: Apple,
+      title: "Nivel 5: Dolor y Grietas",
+      description: "Juego de memoria sobre soluciones al dolor",
+      icon: Stethoscope,
       color: "soft-gold",
       locked: profile?.level ? profile.level < 5 : true,
     },

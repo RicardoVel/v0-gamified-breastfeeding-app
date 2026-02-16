@@ -4,6 +4,7 @@ import { DragDropGame } from "@/components/drag-drop-game"
 import { ClassifyGame } from "@/components/classify-game"
 import { MatchingGame } from "@/components/matching-game"
 import { LabelGame } from "@/components/label-game"
+import { MemoryGame } from "@/components/memory-game"
 
 const levelData = {
   1: {
@@ -71,19 +72,14 @@ const levelData = {
     ],
   },
   5: {
-    title: "Alimentacion Complementaria",
-    question: "Arrastra las practicas CORRECTAS de alimentacion complementaria:",
-    backgroundImage: "/images/fondo_2.png",
-    correctAnswers: [
-      { text: "Iniciar a los 6 meses con alimentos blandos", feedback: "La OMS recomienda iniciar la alimentacion complementaria a los 6 meses, cuando el bebe muestra senales de estar listo." },
-      { text: "Continuar la lactancia junto con los alimentos", feedback: "La leche materna sigue siendo importante. Se complementa con alimentos, no se reemplaza." },
-      { text: "Introducir un alimento nuevo cada 3 dias", feedback: "Esto permite identificar posibles alergias o intolerancias a cada alimento nuevo." },
-      { text: "Ofrecer variedad de frutas y verduras", feedback: "Una dieta variada asegura que el bebe reciba todos los nutrientes necesarios para su crecimiento." },
-    ],
-    incorrectAnswers: [
-      { text: "Dar alimentos solidos desde los 3 meses", feedback: "Antes de los 6 meses el sistema digestivo del bebe no esta preparado. Solo necesita leche materna." },
-      { text: "Agregar sal y azucar a las papillas", feedback: "Los bebes no necesitan sal ni azucar. Sus rinones no estan preparados para procesarlos." },
-      { text: "Reemplazar la leche materna por jugos", feedback: "Los jugos no sustituyen la leche materna. Contienen mucho azucar y pocos nutrientes esenciales." },
+    gameType: "memory" as const,
+    title: "Dolor y Grietas del Pezon",
+    question: "Encuentra las parejas: relaciona cada imagen con su solucion",
+    backgroundImage: "/images/fondo_5.png",
+    memoryPairs: [
+      { id: "agarre", text: "Ajustar agarre", image: "/images/nivel5/ajustar-agarre.jpg", feedback: "Un buen agarre es la clave para prevenir el dolor. El bebe debe tomar gran parte de la areola, no solo el pezon, con la boca bien abierta." },
+      { id: "lubricar", text: "Aplicar una gota de leche para lubricar (antes y despues de amamantar)", image: "/images/nivel5/lubricar-pezon.jpg", feedback: "La propia leche materna tiene propiedades cicatrizantes y antibacterianas. Aplicar una gota antes y despues de cada toma protege y ayuda a sanar el pezon." },
+      { id: "formar", text: "Formar el pezon como si le subieran el volumen a la radio", image: "/images/nivel5/formar-pezon.jpg", feedback: "Esta tecnica ayuda a evertir el pezon para facilitar el agarre del bebe. Se gira suavemente con los dedos indice y pulgar, como si se girara la perilla de una radio." },
     ],
   },
   6: {
@@ -187,6 +183,20 @@ export default async function LevelPage({
   const level = levelData[levelId as keyof typeof levelData]
   if (!level) {
     redirect("/game")
+  }
+
+  // Memory game (Dolor y Grietas)
+  if ("gameType" in level && level.gameType === "memory") {
+    return (
+      <MemoryGame
+        levelId={levelId}
+        userId={data.user.id}
+        title={level.title}
+        question={level.question}
+        pairs={level.memoryPairs}
+        backgroundImage={"backgroundImage" in level ? level.backgroundImage : undefined}
+      />
+    )
   }
 
   // Label game (Agarre Correcto)
