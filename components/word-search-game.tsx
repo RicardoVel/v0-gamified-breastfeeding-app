@@ -482,7 +482,7 @@ export function WordSearchGame({
                 src={gridBackgroundImage}
                 alt=""
                 fill
-                className="object-cover opacity-30"
+                className="object-cover opacity-80"
                 sizes="(max-width: 768px) 100vw, 500px"
               />
             </div>
