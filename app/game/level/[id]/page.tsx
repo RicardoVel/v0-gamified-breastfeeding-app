@@ -8,6 +8,7 @@ import { MemoryGame } from "@/components/memory-game"
 import { OrderStepsGame } from "@/components/order-steps-game"
 import { WordSearchGame } from "@/components/word-search-game"
 import { TrueFalseGame } from "@/components/true-false-game"
+import { GardenGame } from "@/components/garden-game"
 
 const levelData = {
   1: {
@@ -125,19 +126,22 @@ const levelData = {
     ],
   },
   9: {
-    title: "Nutricion Materna",
-    question: "Arrastra los consejos de nutricion CORRECTOS para la mama lactante:",
-    backgroundImage: "/images/fondo_2.png",
-    correctAnswers: [
-      { text: "Beber abundante agua durante el dia", feedback: "La hidratacion es clave. La mama necesita liquidos extra para producir leche, al menos 2 litros diarios." },
-      { text: "Comer una dieta variada y equilibrada", feedback: "Una dieta balanceada asegura que la leche contenga todos los nutrientes que el bebe necesita." },
-      { text: "Consumir alimentos ricos en calcio", feedback: "El calcio es esencial durante la lactancia. Lacteos, verduras de hoja verde y frutos secos son buenas fuentes." },
-      { text: "Comer porciones extras saludables", feedback: "La mama lactante necesita aproximadamente 500 calorias extra al dia para producir leche de calidad." },
+    gameType: "garden" as const,
+    title: "Haz que el Jardin Florezca",
+    question: "Arrastra cada tarjeta a la zona correcta para hacer florecer el jardin",
+    backgroundImage: "/images/fondo_8.png",
+    gardenImages: [
+      "/images/nivel9/garden-0.jpg",
+      "/images/nivel9/garden-1.jpg",
+      "/images/nivel9/garden-2.jpg",
+      "/images/nivel9/garden-3.jpg",
     ],
-    incorrectAnswers: [
-      { text: "Hacer dietas estrictas para bajar de peso rapido", feedback: "Las dietas muy restrictivas pueden reducir la produccion de leche y privar al bebe de nutrientes importantes." },
-      { text: "Evitar completamente el cafe y el chocolate", feedback: "Se puede consumir cafe y chocolate con moderacion (1-2 tazas al dia). Solo se debe evitar el exceso." },
-      { text: "Tomar cerveza para producir mas leche", feedback: "El alcohol no aumenta la produccion de leche. Al contrario, puede pasar al bebe y afectar su desarrollo." },
+    gardenCards: [
+      { id: "amamantar", text: "Amamantar con frecuencia", image: "/images/nivel9/amamantar-frecuencia.jpg", isCorrect: true, feedback: "Amamantar con frecuencia estimula la produccion de leche y asegura que el bebe reciba todos los nutrientes que necesita." },
+      { id: "agua", text: "Tomar agua", image: "/images/nivel9/tomar-agua.png", isCorrect: true, feedback: "Mantenerse hidratada es fundamental para la produccion de leche. Se recomienda beber agua cada vez que se amamanta." },
+      { id: "descansar", text: "Descansar", image: "/images/nivel9/descansar.jpg", isCorrect: true, feedback: "El descanso adecuado ayuda a mantener la produccion de leche y el bienestar emocional de la mama." },
+      { id: "alimentacion", text: "Alimentacion saludable", image: "/images/nivel9/alimentacion-saludable.jpg", isCorrect: true, feedback: "Una dieta variada y nutritiva asegura que la leche materna contenga todos los nutrientes esenciales para el bebe." },
+      { id: "suspender", text: "Suspender la lactancia", image: "/images/nivel9/suspende-lactancia.jpg", isCorrect: false, feedback: "Suspender la lactancia no favorece el proceso. La lactancia materna es el mejor alimento para el bebe y se recomienda mantenerla." },
     ],
   },
   10: {
@@ -171,6 +175,21 @@ export default async function LevelPage({
   const level = levelData[levelId as keyof typeof levelData]
   if (!level) {
     redirect("/game")
+  }
+
+  // Garden game (Haz que el Jardin Florezca)
+  if ("gameType" in level && level.gameType === "garden") {
+    return (
+      <GardenGame
+        levelId={levelId}
+        userId={data.user.id}
+        title={level.title}
+        question={level.question}
+        cards={level.gardenCards}
+        gardenImages={level.gardenImages}
+        backgroundImage={"backgroundImage" in level ? level.backgroundImage : undefined}
+      />
+    )
   }
 
   // True/False game (Mastitis)

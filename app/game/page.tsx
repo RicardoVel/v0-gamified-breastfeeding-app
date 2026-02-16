@@ -83,9 +83,9 @@ export default async function GamePage() {
     },
     {
       id: 9,
-      title: "Nivel 9: Nutricion Materna",
-      description: "La alimentacion ideal durante la lactancia",
-      icon: BookOpen,
+      title: "Nivel 9: Haz Florecer el Jardin",
+      description: "Clasifica que favorece y que no la lactancia",
+      icon: Sparkles,
       color: "sky-blue",
       locked: profile?.level ? profile.level < 9 : true,
     },
