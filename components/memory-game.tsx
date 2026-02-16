@@ -59,6 +59,7 @@ export function MemoryGame({
   const [firstCard, setFirstCard] = useState<CardType | null>(null)
   const [secondCard, setSecondCard] = useState<CardType | null>(null)
   const [isChecking, setIsChecking] = useState(false)
+  const [freeFlipsLeft, setFreeFlipsLeft] = useState(3)
   const feedbackTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Create shuffled cards: for each pair, one text card and one image card
@@ -115,7 +116,12 @@ export function MemoryGame({
     } else if (!secondCard) {
       setSecondCard(card)
       setIsChecking(true)
-      setAttempts((prev) => prev + 1)
+      // Solo contar intento si ya no quedan giros de cortesia
+      if (freeFlipsLeft <= 0) {
+        setAttempts((prev) => prev + 1)
+      } else {
+        setFreeFlipsLeft((prev) => prev - 1)
+      }
     }
   }
 
@@ -143,7 +149,7 @@ export function MemoryGame({
 
         // Check if game is complete
         if (newMatched === totalPairs) {
-          setTimeout(() => finishGame(newMatched, attempts + 1), 1500)
+          setTimeout(() => finishGame(newMatched, attempts), 1500)
         }
       } else {
         // Flip both back
@@ -311,9 +317,16 @@ export function MemoryGame({
               {matchedCount} / {totalPairs}
             </span>
           </div>
-          <div className="flex items-center gap-2 mt-1">
-            <RotateCcw size={12} className="text-muted-foreground" />
-            <span className="text-xs text-muted-foreground">Intentos: {attempts}</span>
+          <div className="flex items-center justify-between mt-1">
+            <div className="flex items-center gap-2">
+              <RotateCcw size={12} className="text-muted-foreground" />
+              <span className="text-xs text-muted-foreground">Intentos: {attempts}</span>
+            </div>
+            {freeFlipsLeft > 0 && (
+              <span className="text-xs font-semibold text-sky-600 bg-sky-100 px-2 py-0.5 rounded-full">
+                {freeFlipsLeft} giro{freeFlipsLeft !== 1 ? "s" : ""} gratis
+              </span>
+            )}
           </div>
         </div>
 
