@@ -75,8 +75,8 @@ export default async function GamePage() {
     },
     {
       id: 8,
-      title: "Nivel 8: Lactancia y Trabajo",
-      description: "Como mantener la lactancia al volver al trabajo",
+      title: "Nivel 8: Mastitis",
+      description: "Verdadero o falso sobre la mastitis",
       icon: Clock,
       color: "soft-gold",
       locked: profile?.level ? profile.level < 8 : true,

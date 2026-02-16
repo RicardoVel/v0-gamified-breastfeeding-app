@@ -7,6 +7,7 @@ import { LabelGame } from "@/components/label-game"
 import { MemoryGame } from "@/components/memory-game"
 import { OrderStepsGame } from "@/components/order-steps-game"
 import { WordSearchGame } from "@/components/word-search-game"
+import { TrueFalseGame } from "@/components/true-false-game"
 
 const levelData = {
   1: {
@@ -111,19 +112,16 @@ const levelData = {
     ],
   },
   8: {
-    gameType: "classify" as const,
-    title: "Lactancia y Trabajo",
-    question: "Clasifica: es un CONSEJO util o un MITO sobre lactancia y trabajo?",
-    backgroundImage: "/images/fondo_2.png",
-    classifyItems: [
-      { text: "Crear un banco de leche antes de regresar al trabajo", category: "verdad" as const, feedback: "Extraer y congelar leche semanas antes permite tener reservas para cuando la mama no este presente." },
-      { text: "La leche extraida dura hasta 6 horas a temperatura ambiente", category: "verdad" as const, feedback: "A temperatura ambiente (hasta 25 grados), la leche materna se conserva segura durante 4 a 6 horas." },
-      { text: "Se puede congelar la leche hasta por 6 meses", category: "verdad" as const, feedback: "En un congelador a -18 grados, la leche materna se conserva de forma segura hasta 6 meses." },
-      { text: "Extraerse leche en el trabajo mantiene la produccion", category: "verdad" as const, feedback: "Extraer leche con la misma frecuencia que el bebe mama ayuda a mantener la produccion estable." },
-      { text: "Al volver al trabajo hay que dejar de amamantar", category: "mito" as const, feedback: "Muchas mamas combinan exitosamente el trabajo con la lactancia. La extraccion de leche es clave." },
-      { text: "La leche congelada pierde todos sus nutrientes", category: "mito" as const, feedback: "La leche congelada conserva la mayoria de sus nutrientes y anticuerpos. Es mucho mejor que la formula." },
-      { text: "Hay que calentar la leche en microondas", category: "mito" as const, feedback: "El microondas destruye nutrientes y puede crear puntos calientes peligrosos. Se calienta a bano maria." },
-      { text: "Si se mezcla leche de distintas extracciones, se dana", category: "mito" as const, feedback: "Se puede mezclar leche de distintas extracciones del mismo dia, siempre que esten a la misma temperatura." },
+    gameType: "truefalse" as const,
+    title: "Verdadero o Falso: Mastitis",
+    question: "Marca cada frase como verdadera o falsa",
+    backgroundImage: "/images/fondo_8.png",
+    tfStatements: [
+      { id: "mastitis-dejar", text: "La mastitis siempre obliga a dejar de amamantar", isTrue: false, feedback: "La mastitis NO obliga a dejar de amamantar. De hecho, es recomendable seguir amamantando para ayudar a drenar el pecho y aliviar la inflamacion." },
+      { id: "amamantar-desinflama", text: "Amamantar ayuda a desinflamar el pecho", isTrue: true, feedback: "Amamantar con frecuencia del pecho afectado ayuda a vaciarlo, lo que reduce la inflamacion y acelera la recuperacion de la mastitis." },
+      { id: "dolor-suspender", text: "El dolor es senal de que debo suspender la lactancia", isTrue: false, feedback: "El dolor indica que algo debe corregirse (agarre, posicion, frecuencia), pero suspender la lactancia puede empeorar la mastitis al acumular mas leche." },
+      { id: "sin-absceso", text: "Puedo seguir amamantando si no hay absceso", isTrue: true, feedback: "Mientras no haya un absceso que requiera drenaje quirurgico, es seguro y beneficioso continuar amamantando con mastitis." },
+      { id: "fiebre-bebe", text: "La fiebre en el bebe es por la mastitis", isTrue: false, feedback: "La mastitis causa fiebre en la mama, no en el bebe. Si el bebe tiene fiebre, se debe a otra causa y requiere evaluacion pediatrica independiente." },
     ],
   },
   9: {
@@ -179,6 +177,20 @@ export default async function LevelPage({
   const level = levelData[levelId as keyof typeof levelData]
   if (!level) {
     redirect("/game")
+  }
+
+  // True/False game (Mastitis)
+  if ("gameType" in level && level.gameType === "truefalse") {
+    return (
+      <TrueFalseGame
+        levelId={levelId}
+        userId={data.user.id}
+        title={level.title}
+        question={level.question}
+        statements={level.tfStatements}
+        backgroundImage={"backgroundImage" in level ? level.backgroundImage : undefined}
+      />
+    )
   }
 
   // Word search game (Sopa de Letras)
