@@ -5,6 +5,7 @@ import { ClassifyGame } from "@/components/classify-game"
 import { MatchingGame } from "@/components/matching-game"
 import { LabelGame } from "@/components/label-game"
 import { MemoryGame } from "@/components/memory-game"
+import { OrderStepsGame } from "@/components/order-steps-game"
 
 const levelData = {
   1: {
@@ -83,19 +84,15 @@ const levelData = {
     ],
   },
   6: {
-    gameType: "classify" as const,
-    title: "Problemas Comunes",
-    question: "Clasifica: es una SOLUCION real o un MITO sobre problemas de lactancia?",
-    backgroundImage: "/images/fondo_2.png",
-    classifyItems: [
-      { text: "Si hay grietas, revisar el agarre del bebe", category: "verdad" as const, feedback: "Las grietas casi siempre se deben a un mal agarre. Un profesional puede ayudar a corregir la posicion." },
-      { text: "Aplicar leche materna sobre grietas ayuda a sanar", category: "verdad" as const, feedback: "La leche materna tiene propiedades antibacterianas y cicatrizantes que ayudan a sanar las grietas del pezon." },
-      { text: "Amamantar frecuentemente previene la mastitis", category: "verdad" as const, feedback: "Vaciar el pecho con frecuencia evita la acumulacion de leche que puede causar mastitis." },
-      { text: "Consultar a un especialista en lactancia es util", category: "verdad" as const, feedback: "Los consultores de lactancia certificados pueden resolver la mayoria de los problemas con tecnicas adecuadas." },
-      { text: "Si hay dolor, es mejor dejar de amamantar", category: "mito" as const, feedback: "El dolor indica un problema que se puede resolver. Dejar de amamantar no es la solucion, sino buscar ayuda profesional." },
-      { text: "Los pechos pequenos producen menos leche", category: "mito" as const, feedback: "El tamano del pecho no determina la produccion. La leche se produce en las glandulas mamarias, no en la grasa." },
-      { text: "El estres hace que la leche se corte", category: "mito" as const, feedback: "El estres puede retrasar temporalmente la bajada de leche, pero no la elimina. Relajarse y amamantar con frecuencia ayuda." },
-      { text: "Hay que preparar los pezones antes del parto", category: "mito" as const, feedback: "No es necesario preparar los pezones. El cuerpo se prepara naturalmente durante el embarazo." },
+    gameType: "order" as const,
+    title: "Pasos para la Congestion Mamaria",
+    question: "Ordena los pasos correctos para aliviar la congestion mamaria",
+    backgroundImage: "/images/fondo_6.png",
+    orderSteps: [
+      { id: "calor", text: "Aplicar calor local antes de amamantar", correctOrder: 1, feedback: "El calor ayuda a dilatar los conductos de leche y facilita que la leche fluya con mayor facilidad antes de la toma." },
+      { id: "extraer", text: "Extraer un poco de leche", correctOrder: 2, feedback: "Extraer un poco de leche manualmente o con sacaleches alivia la presion y ablanda la areola, facilitando el agarre del bebe." },
+      { id: "amamantar", text: "Amamantar al bebe", correctOrder: 3, feedback: "Una vez que el pecho esta mas blando, el bebe puede agarrarse mejor y vaciar el pecho de forma efectiva, aliviando la congestion." },
+      { id: "frio", text: "Aplicar frio local despues", correctOrder: 4, feedback: "El frio despues de amamantar reduce la inflamacion y el dolor. Se aplica con compresas frias o bolsas de gel por 15-20 minutos." },
     ],
   },
   7: {
@@ -183,6 +180,20 @@ export default async function LevelPage({
   const level = levelData[levelId as keyof typeof levelData]
   if (!level) {
     redirect("/game")
+  }
+
+  // Order steps game (Congestion Mamaria)
+  if ("gameType" in level && level.gameType === "order") {
+    return (
+      <OrderStepsGame
+        levelId={levelId}
+        userId={data.user.id}
+        title={level.title}
+        question={level.question}
+        steps={level.orderSteps}
+        backgroundImage={"backgroundImage" in level ? level.backgroundImage : undefined}
+      />
+    )
   }
 
   // Memory game (Dolor y Grietas)

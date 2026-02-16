@@ -59,9 +59,9 @@ export default async function GamePage() {
     },
     {
       id: 6,
-      title: "Nivel 6: Problemas Comunes",
-      description: "Identifica y resuelve problemas frecuentes",
-      icon: Stethoscope,
+      title: "Nivel 6: Congestion Mamaria",
+      description: "Ordena los pasos para aliviar la congestion",
+      icon: BookOpen,
       color: "sky-blue",
       locked: profile?.level ? profile.level < 6 : true,
     },
