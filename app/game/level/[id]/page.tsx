@@ -23,8 +23,8 @@ const levelData = {
     ],
     incorrectAnswers: [
       { text: "Causa caries dental", description: "Dulces y Golocinas", image: "/images/options/dulce-caries.png", feedback: "Los dulces y azucares causan caries, no la leche materna. La lactancia no dana los dientes de tu bebe." },
-      { text: "Alimentacion con biberon", description: "Biberon: representa la alimentacion artificial", image: "/images/options/biberon.png", feedback: "El biberon no es un beneficio de la lactancia materna. La leche materna se ofrece directamente del pecho." },
-      { text: "Bebidas artificiales", description: "Bebida envasada: representa las bebidas artificiales", image: "/images/options/bebida-artificial.png", feedback: "Las bebidas artificiales no son un beneficio. La leche materna es el alimento mas completo y natural." },
+      { text: "Alimentacion con biberon", description: "Alimentación con Biberon", image: "/images/options/biberon.png", feedback: "El biberon no es un beneficio de la lactancia materna. La leche materna se ofrece directamente del pecho." },
+      { text: "Bebidas artificiales", description: "Bebida enculzadas y/o gasificadas", image: "/images/options/bebida-artificial.png", feedback: "Las bebidas artificiales no son un beneficio. La leche materna es el alimento mas completo y natural." },
     ],
     backgroundImage: "/images/fondo_2.png",
     dropZoneImage: "/images/Mama.png",
