@@ -16,7 +16,7 @@ const levelData = {
     question: "Arrastra los beneficios de la lactancia materna para tu bebé:",
     correctAnswers: [
       { text: "Fortalece el sistema inmunologico", description: "Escudo con cruz medica: representa la proteccion inmunologica", image: "/images/options/sistema-inmune.png", feedback: "La leche materna contiene anticuerpos que protegen a tu bebe de enfermedades e infecciones." },
-      { text: "Mejora el desarrollo cerebral", description: "Cerebro brillante: representa el desarrollo neurologico del bebe", image: "/images/options/desarrollo-cerebral.png", feedback: "Los acidos grasos de la leche materna, como el DHA, favorecen el desarrollo del cerebro de tu bebe." },
+      { text: "Mejora el desarrollo cerebral", description: "Desarrollo neurologico del bebé", image: "/images/options/desarrollo-cerebral.png", feedback: "Los acidos grasos de la leche materna, como el DHA, favorecen el desarrollo del cerebro de tu bebe." },
       { text: "Reduce riesgo de infecciones", description: "Bebe protegido: representa la reduccion de infecciones", image: "/images/options/reduce-infecciones.png", feedback: "La lactancia materna reduce significativamente el riesgo de infecciones respiratorias y gastrointestinales." },
       { text: "Favorece el vinculo madre-hijo", description: "Vinculo emocional", image: "/images/options/vinculo-emocional.png", feedback: "El contacto piel a piel durante la lactancia fortalece el lazo emocional entre mama y bebe." },
       { text: "Mejora la digestion", description: "Estomago feliz: representa una digestion saludable", image: "/images/options/estomago-feliz.png", feedback: "La leche materna es facilmente digerible y contiene enzimas que ayudan a la digestion de tu bebe." },
