@@ -79,7 +79,7 @@ export function DragDropGame({
     if (feedbackTimeoutRef.current) {
       clearTimeout(feedbackTimeoutRef.current)
     }
-    const defaultCorrect = "Muy bien! Esa es una respuesta correcta."
+    const defaultCorrect = "!Muy bien! Esa es una respuesta correcta."
     const defaultIncorrect = "Eso no es correcto. Intenta con otra opcion."
     setFeedback({
       message: item.feedback || (item.isCorrect ? defaultCorrect : defaultIncorrect),
