@@ -97,7 +97,7 @@ export function OrderStepsGame({
     if (allCorrect) {
       // All correct - build feedback with all steps
       const allFeedback = orderedSteps.map((s, i) => `${i + 1}. ${s.text}: ${s.feedback}`).join("\n\n")
-      showFeedback("Excelente! El orden es perfecto. " + orderedSteps[0].feedback, true)
+      showFeedback("¡Excelente! El orden es perfecto. " + orderedSteps[0].feedback, true)
       setTimeout(() => finishGame(), 2000)
     } else {
       const wrongCount = Object.values(positions).filter((v) => !v).length
