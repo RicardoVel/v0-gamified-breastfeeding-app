@@ -13,7 +13,7 @@ import { GardenGame } from "@/components/garden-game"
 const levelData = {
   1: {
     title: "Beneficios del Bebé",
-    question: "Arrastra los beneficios de la lactancia materna para el bebé:",
+    question: "Arrastra los beneficios de la lactancia materna para tu bebé:",
     correctAnswers: [
       { text: "Fortalece el sistema inmunologico", image: "/images/options/sistema-inmune.png", feedback: "La leche materna contiene anticuerpos que protegen a tu bebé de enfermedades e infecciones." },
       { text: "Mejora el desarrollo cerebral", image: "/images/options/desarrollo-cerebral.png", feedback: "Los acidos grasos de la leche materna, como el DHA, favorecen el desarrollo del cerebro de tu bebé." },
