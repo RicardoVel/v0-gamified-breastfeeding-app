@@ -68,7 +68,7 @@ const levelData = {
     backgroundImage: "/images/fondo_3.png",
     diagramImage: "/images/nivel4/agarre-limpio.png",
     labelZones: [
-      { id: "boca", label: "Boca bien abierta", x: 46, y: 50, feedback: "El bebe debe abrir bien la boca para lograr un agarre profundo que abarque gran parte de la areola, no solo el pezon." },
+      { id: "boca", label: "Boca bien abierta", x: 46, y: 51, feedback: "El bebe debe abrir bien la boca para lograr un agarre profundo que abarque gran parte de la areola, no solo el pezon." },
       { id: "areola", label: "Abarca gran parte de la areola", x: 62, y: 44, feedback: "Un buen agarre cubre la mayor parte de la areola. Se debe ver mas areola por arriba de la boca del bebe que por abajo." },
       { id: "barbilla", label: "Barbilla tocando el pecho", x: 54, y: 61, feedback: "La barbilla del bebe debe estar firmemente pegada al pecho de la mama. Esto asegura un agarre profundo y efectivo." },
       { id: "nariz", label: "Nariz despejada", x: 45, y: 38, feedback: "La nariz del bebe debe quedar libre y despejada para poder respirar con facilidad mientras amamanta." },
