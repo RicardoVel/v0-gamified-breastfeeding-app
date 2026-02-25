@@ -337,7 +337,7 @@ export function ClassifyGame({
             <Image src="/images/mascota-triste.png" alt="Mascota" width={55} height={55} className="object-contain flex-shrink-0" />
             <div className="flex-1 min-w-0">
               <p className={`text-sm font-bold mb-0.5 ${feedback.isCorrect ? "text-green-700" : "text-red-700"}`}>
-                {feedback.isCorrect ? "Bien hecho!" : "Sigue intentando"}
+                {feedback.isCorrect ? "¡Bien hecho!" : "Sigue intentando"}
               </p>
               <p className={`text-xs leading-relaxed ${feedback.isCorrect ? "text-green-600" : "text-red-600"}`}>{feedback.message}</p>
             </div>
