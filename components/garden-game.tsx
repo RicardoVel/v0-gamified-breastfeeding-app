@@ -352,7 +352,7 @@ export function GardenGame({
               </div>
 
               <h2 className="text-xl font-bold text-foreground mb-2">
-                {stars === 3 ? "Tu jardin florece con esplendor!" : stars === 2 ? "¡Tu jardin esta creciendo!" : "Tu jardin esta brotando!"}
+                {stars === 3 ? "¡Tu jardin florece con esplendor!" : stars === 2 ? "¡Tu jardin esta creciendo!" : "¡Tu jardin esta brotando!"}
               </h2>
 
               <p className="text-sm text-muted-foreground mb-3">
