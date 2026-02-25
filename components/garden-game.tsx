@@ -357,7 +357,7 @@ export function GardenGame({
 
               <p className="text-sm text-muted-foreground mb-3">
                 {stars === 3
-                  ? "Tu jardin florece cuando apoyas la lactancia!"
+                  ? "!Tu jardin florece cuando apoyas la lactancia!"
                   : "Sigue aprendiendo para hacer florecer tu jardin por completo."}
               </p>
 
