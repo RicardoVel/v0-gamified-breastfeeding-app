@@ -88,7 +88,7 @@ const levelData = {
   },
   6: {
     gameType: "order" as const,
-    title: "Pasos para la Congestion Mamaria",
+    title: "Pasos para aliviar la congestión mamaria",
     question: "Ordena los pasos correctos para aliviar la congestion mamaria",
     backgroundImage: "/images/fondo_6.png",
     orderSteps: [
