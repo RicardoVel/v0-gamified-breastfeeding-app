@@ -88,7 +88,7 @@ export function ClassifyGame({
     setFeedback({ message, isCorrect, visible: true })
     feedbackTimeoutRef.current = setTimeout(() => {
       setFeedback((prev) => ({ ...prev, visible: false }))
-    }, 7000)
+    }, 11000)
   }
 
   // Place item in a zone
@@ -117,7 +117,7 @@ export function ClassifyGame({
     if (newPlacedItems.length === allItems.length) {
       setTimeout(() => {
         finishGame(newPlacedItems)
-      }, 5000)
+      }, 9000)
     }
   }
 

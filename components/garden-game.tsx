@@ -86,7 +86,7 @@ export function GardenGame({
         if (newPlaced.length === shuffledCards.length) {
           finishGame(newCorrect)
         }
-      }, 2500)
+      }, 6500)
     } else {
       setErrorCount(prev => prev + 1)
       setWrongCard(cardId)

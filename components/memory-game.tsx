@@ -100,7 +100,7 @@ export function MemoryGame({
     setFeedback({ message, isCorrect, visible: true })
     feedbackTimeoutRef.current = setTimeout(() => {
       setFeedback((prev) => ({ ...prev, visible: false }))
-    }, 5000)
+    }, 9000)
   }
 
   const handleCardClick = (card: CardType) => {

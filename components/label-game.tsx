@@ -69,7 +69,7 @@ export function LabelGame({
     setFeedback({ message, isCorrect, visible: true })
     feedbackTimeoutRef.current = setTimeout(() => {
       setFeedback((prev) => ({ ...prev, visible: false }))
-    }, 7000)
+    }, 11000)
   }
 
   const handleLabelTap = (label: string) => {

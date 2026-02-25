@@ -72,7 +72,7 @@ export function MatchingGame({
     setFeedback({ message, isCorrect, visible: true })
     feedbackTimeoutRef.current = setTimeout(() => {
       setFeedback((prev) => ({ ...prev, visible: false }))
-    }, 7000)
+    }, 11000)
   }
 
   const handleSelectOption = (name: string) => {

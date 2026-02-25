@@ -67,7 +67,7 @@ export function OrderStepsGame({
     setFeedback({ message, isCorrect, visible: true })
     feedbackTimeoutRef.current = setTimeout(() => {
       setFeedback((prev) => ({ ...prev, visible: false }))
-    }, 6000)
+    }, 10000)
   }
 
   const moveStep = (index: number, direction: "up" | "down") => {

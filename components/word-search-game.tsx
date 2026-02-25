@@ -152,7 +152,7 @@ export function WordSearchGame({
     setFeedback({ message, isCorrect, visible: true })
     feedbackTimeoutRef.current = setTimeout(() => {
       setFeedback((prev) => ({ ...prev, visible: false }))
-    }, 4000)
+    }, 8000)
   }, [])
 
   // Check if selected cells match a word

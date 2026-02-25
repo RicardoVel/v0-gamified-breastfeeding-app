@@ -13,6 +13,7 @@ import Image from "next/image"
 interface AnswerOption {
   text: string
   image?: string
+  description?: string
   feedback?: string
 }
 
@@ -20,6 +21,7 @@ interface DragItem {
   id: string
   text: string
   image?: string
+  description?: string
   isCorrect: boolean
   feedback?: string
 }
@@ -88,7 +90,7 @@ export function DragDropGame({
     })
     feedbackTimeoutRef.current = setTimeout(() => {
       setFeedback((prev) => ({ ...prev, visible: false }))
-    }, 7000)
+    }, 11000)
   }
 
   // Shuffle items only once using useMemo with empty dependency
@@ -100,6 +102,7 @@ export function DragDropGame({
         id: `correct-${i}`,
         text: normalized.text,
         image: normalized.image,
+        description: normalized.description,
         isCorrect: true,
         feedback: normalized.feedback,
       }
@@ -110,6 +113,7 @@ export function DragDropGame({
         id: `incorrect-${i}`,
         text: normalized.text,
         image: normalized.image,
+        description: normalized.description,
         isCorrect: false,
         feedback: normalized.feedback,
       }
@@ -506,14 +510,19 @@ export function DragDropGame({
                 }`}
               >
                 {item.image ? (
-                  <Image
-                    src={item.image || "/placeholder.svg"}
-                    alt={item.text}
-                    width={70}
-                    height={70}
-                    className="object-contain pointer-events-none"
-                    draggable={false}
-                  />
+                  <div className="flex flex-col items-center gap-1">
+                    <Image
+                      src={item.image || "/placeholder.svg"}
+                      alt={item.text}
+                      width={70}
+                      height={70}
+                      className="object-contain pointer-events-none"
+                      draggable={false}
+                    />
+                    {item.description && (
+                      <span className="text-[9px] text-muted-foreground text-center leading-tight max-w-[80px]">{item.description}</span>
+                    )}
+                  </div>
                 ) : (
                   <span className="font-medium text-foreground text-sm">{item.text}</span>
                 )}
