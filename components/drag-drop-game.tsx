@@ -349,14 +349,14 @@ export function DragDropGame({
               {/* Instructions when item selected */}
               {selectedItem && (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-sky-500/90 text-white px-4 py-2 rounded-xl text-sm font-medium animate-bounce shadow-lg">
-                  Toca aqui para soltar
+                  Toca aquí para soltar
                 </div>
               )}
               {/* Dropped items around the image */}
               <div className="flex flex-wrap gap-2 justify-center mt-3 px-2">
                 {droppedItems.length === 0 && !selectedItem ? (
                   <p className="text-white/90 text-center text-sm py-2 px-4 bg-black/20 rounded-xl backdrop-blur-sm">
-                    Toca una opcion y luego toca la mama
+                    Toca una opción y luego toca a la mamá
                   </p>
                 ) : droppedItems.length === 0 && selectedItem ? null : (
                   droppedItems.map((item) => (
