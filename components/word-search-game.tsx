@@ -41,8 +41,7 @@ const DIRECTIONS: [number, number][] = [
   [0, 1],   // horizontal right
   [1, 0],   // vertical down
   [0, -1],  // horizontal left
-  [1, 1],   // diagonal down-right
-  [-1, 1],  // diagonal up-right
+  [-1, 0],  // vertical up
 ]
 
 function generateGrid(words: WordEntry[]): { grid: string[][]; placedWords: PlacedWord[] } {
