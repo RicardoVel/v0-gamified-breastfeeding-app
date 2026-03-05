@@ -27,9 +27,23 @@ export default async function proxy(request: NextRequest) {
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // Invalid refresh token - clear auth cookies and redirect to login
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/login";
+    const redirectResponse = NextResponse.redirect(url);
+    // Clear all supabase auth cookies
+    request.cookies.getAll().forEach(({ name }) => {
+      if (name.startsWith("sb-")) {
+        redirectResponse.cookies.set(name, "", { maxAge: 0 });
+      }
+    });
+    return redirectResponse;
+  }
 
   if (
     (request.nextUrl.pathname.startsWith("/game") ||
