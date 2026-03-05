@@ -9,6 +9,7 @@ import { Star, X, Check, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
+import { LevelCompleteAnimation } from "@/components/level-complete-animation"
 
 interface AnswerOption {
   text: string
@@ -286,6 +287,8 @@ export function DragDropGame({
               Has ganado {stars} {stars === 1 ? "estrella" : "estrellas"}
             </p>
           </div>
+
+          <LevelCompleteAnimation stars={stars} />
 
           <div className="flex justify-center gap-2">
             {[1, 2, 3].map((i) => (

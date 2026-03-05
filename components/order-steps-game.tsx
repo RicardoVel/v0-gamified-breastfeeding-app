@@ -7,6 +7,7 @@ import { Star, X, Sparkles, ArrowUp, ArrowDown, Check } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
+import { LevelCompleteAnimation } from "@/components/level-complete-animation"
 
 interface OrderStep {
   id: string
@@ -226,6 +227,8 @@ export function OrderStepsGame({
                 </div>
               ))}
           </div>
+
+          <LevelCompleteAnimation stars={stars} />
 
           <div className="flex justify-center gap-2">
             {[1, 2, 3].map((i) => (

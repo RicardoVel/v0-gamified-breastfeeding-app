@@ -7,6 +7,7 @@ import { Star, X, Sparkles, RotateCcw } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
+import { LevelCompleteAnimation } from "@/components/level-complete-animation"
 
 interface MemoryPair {
   id: string
@@ -271,6 +272,8 @@ export function MemoryGame({
           <p className="text-sm text-muted-foreground">
             Encontraste {matchedCount} parejas en {attempts} intentos
           </p>
+
+          <LevelCompleteAnimation stars={stars} />
 
           <div className="flex justify-center gap-2">
             {[1, 2, 3].map((i) => (

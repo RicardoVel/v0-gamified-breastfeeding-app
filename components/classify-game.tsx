@@ -8,6 +8,7 @@ import { Star, X, Check, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
+import { LevelCompleteAnimation } from "@/components/level-complete-animation"
 
 interface ClassifyItem {
   text: string
@@ -247,6 +248,8 @@ export function ClassifyGame({
           <p className="text-sm text-muted-foreground">
             Clasificaste {placedItems.filter((p) => p.isCorrect).length} de {placedItems.length} correctamente
           </p>
+
+          <LevelCompleteAnimation stars={stars} />
 
           <div className="flex justify-center gap-2">
             {[1, 2, 3].map((i) => (

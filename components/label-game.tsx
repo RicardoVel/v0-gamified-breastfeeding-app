@@ -7,6 +7,7 @@ import { Star, X, Sparkles, Check } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
+import { LevelCompleteAnimation } from "@/components/level-complete-animation"
 
 interface LabelZone {
   id: string
@@ -197,6 +198,8 @@ export function LabelGame({
             Identificaste las {zones.length} partes del agarre correcto
             {mistakes === 0 ? " sin ningun error." : ` con ${mistakes} intento${mistakes > 1 ? "s" : ""} fallido${mistakes > 1 ? "s" : ""}.`}
           </p>
+
+          <LevelCompleteAnimation stars={stars} />
 
           <div className="flex justify-center gap-2">
             {[1, 2, 3].map((i) => (

@@ -7,6 +7,7 @@ import { Star, X, ChevronRight, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
+import { LevelCompleteAnimation } from "@/components/level-complete-animation"
 
 interface MatchingPair {
   name: string
@@ -202,6 +203,8 @@ export function MatchingGame({
           <p className="text-sm text-muted-foreground">
             Identificaste {finalCorrect} de {shuffledPairs.length} posiciones correctamente
           </p>
+
+          <LevelCompleteAnimation stars={stars} />
 
           <div className="flex justify-center gap-2">
             {[1, 2, 3].map((i) => (
