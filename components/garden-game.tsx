@@ -332,37 +332,44 @@ export function GardenGame({
       {showResults && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-3xl p-5 sm:p-6 max-w-sm w-full shadow-2xl text-center mx-3">
-              <Image
-                src="/images/mascota-gota.png"
-                alt="Mascota"
-                width={80}
-                height={80}
-                className="mx-auto mb-3 object-contain"
-              />
-
               {/* Garden final state */}
-              <div className="relative w-40 h-40 mx-auto mb-4 rounded-2xl overflow-hidden shadow-md">
+              <div className="relative w-32 h-32 mx-auto mb-3 rounded-2xl overflow-hidden shadow-md">
                 <Image
                   src={gardenImages[gardenIndex]}
                   alt="Tu jardin"
                   fill
                   className="object-cover"
-                  sizes="160px"
+                  sizes="128px"
                 />
               </div>
 
               <h2 className="text-xl font-bold text-foreground mb-2">
-                {stars === 3 ? "¡Tu jardin florece con esplendor!" : stars === 2 ? "¡Tu jardin esta creciendo!" : "¡Tu jardin esta brotando!"}
+                {stars === 3 ? "Tu jardin florece con esplendor" : stars === 2 ? "Tu jardin esta creciendo" : "Tu jardin esta brotando"}
               </h2>
 
               <p className="text-sm text-muted-foreground mb-3">
                 {stars === 3
-                  ? "¡Tu jardin florece cuando apoyas la lactancia!"
+                  ? "Tu jardin florece cuando apoyas la lactancia"
                   : "Sigue aprendiendo para hacer florecer tu jardin por completo."}
               </p>
 
+              {/* Video de animacion */}
+              <div className="flex justify-center mb-3">
+                <video
+                  src={stars === 3 
+                    ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Correcto-WXeL1iSGFJyPKhloZcnaBFCs1sTwOB.mp4"
+                    : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+                  }
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-36 h-36 object-contain"
+                />
+              </div>
+
               {/* Stars */}
-              <div className="flex justify-center gap-2 mb-4">
+              <div className="flex justify-center gap-2 mb-3">
                 {[1, 2, 3].map((s) => (
                   <Star
                     key={s}
@@ -375,7 +382,7 @@ export function GardenGame({
                 ))}
               </div>
 
-              <div className="text-xs text-muted-foreground mb-4 space-y-1">
+              <div className="text-xs text-muted-foreground mb-3 space-y-1">
                 <p>Correctas: {correctCount}/{cards.filter(c => c.isCorrect).length}</p>
                 <p>Errores: {errorCount}</p>
               </div>

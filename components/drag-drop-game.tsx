@@ -280,15 +280,31 @@ export function DragDropGame({
   }
 
   if (isCompleted) {
+    const resultVideo = stars === 3 
+      ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Correcto-WXeL1iSGFJyPKhloZcnaBFCs1sTwOB.mp4"
+      : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+    
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <Card className="max-w-lg w-full rounded-3xl p-8 shadow-xl text-center space-y-6">
           <div className="space-y-4">
             <Sparkles className="text-soft-gold mx-auto animate-sparkle" size={64} />
-            <h2 className="text-3xl font-bold">¡Nivel Completado!</h2>
+            <h2 className="text-3xl font-bold">Nivel Completado</h2>
             <p className="text-muted-foreground">
               Has ganado {stars} {stars === 1 ? "estrella" : "estrellas"}
             </p>
+          </div>
+
+          {/* Video de animacion */}
+          <div className="flex justify-center">
+            <video
+              src={resultVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-40 h-40 object-contain"
+            />
           </div>
 
           <div className="flex justify-center gap-2">

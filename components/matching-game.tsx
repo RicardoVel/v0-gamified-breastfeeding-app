@@ -187,6 +187,10 @@ export function MatchingGame({
   // Completed screen
   if (isCompleted) {
     const finalCorrect = correctCount
+    const resultVideo = stars === 3 
+      ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Correcto-WXeL1iSGFJyPKhloZcnaBFCs1sTwOB.mp4"
+      : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+    
     return (
       <div
         className="min-h-screen flex items-center justify-center p-4"
@@ -202,6 +206,18 @@ export function MatchingGame({
           <p className="text-sm text-muted-foreground">
             Identificaste {finalCorrect} de {shuffledPairs.length} posiciones correctamente
           </p>
+
+          {/* Video de animacion */}
+          <div className="flex justify-center">
+            <video
+              src={resultVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-40 h-40 object-contain"
+            />
+          </div>
 
           <div className="flex justify-center gap-2">
             {[1, 2, 3].map((i) => (

@@ -232,6 +232,10 @@ export function ClassifyGame({
 
   // Completed screen
   if (isCompleted) {
+    const resultVideo = stars === 3 
+      ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Correcto-WXeL1iSGFJyPKhloZcnaBFCs1sTwOB.mp4"
+      : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+    
     return (
       <div
         className="min-h-screen flex items-center justify-center p-4"
@@ -243,10 +247,22 @@ export function ClassifyGame({
       >
         <Card className="max-w-sm w-full rounded-3xl p-6 shadow-xl text-center space-y-4 bg-white/95 backdrop-blur-sm">
           <Sparkles className="text-soft-gold mx-auto" size={48} />
-          <h2 className="text-2xl font-bold">Nivel Completado 🎉</h2>
+          <h2 className="text-2xl font-bold">Nivel Completado</h2>
           <p className="text-sm text-muted-foreground">
             Clasificaste {placedItems.filter((p) => p.isCorrect).length} de {placedItems.length} correctamente
           </p>
+
+          {/* Video de animacion */}
+          <div className="flex justify-center">
+            <video
+              src={resultVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-40 h-40 object-contain"
+            />
+          </div>
 
           <div className="flex justify-center gap-2">
             {[1, 2, 3].map((i) => (

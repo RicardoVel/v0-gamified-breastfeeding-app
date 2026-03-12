@@ -193,6 +193,10 @@ export function OrderStepsGame({
 
   // Completed screen
   if (isCompleted) {
+    const resultVideo = stars === 3 
+      ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Correcto-WXeL1iSGFJyPKhloZcnaBFCs1sTwOB.mp4"
+      : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+    
     return (
       <div
         className="min-h-screen flex items-center justify-center p-4"
@@ -210,7 +214,7 @@ export function OrderStepsGame({
           </p>
 
           {/* Show correct order */}
-          <div className="text-left space-y-2 bg-emerald-50 rounded-xl p-3">
+          <div className="text-left space-y-2 bg-emerald-50 rounded-xl p-3 max-h-36 overflow-y-auto">
             <p className="text-xs font-bold text-emerald-700 mb-2">Orden correcto:</p>
             {steps
               .sort((a, b) => a.correctOrder - b.correctOrder)
@@ -225,6 +229,18 @@ export function OrderStepsGame({
                   </div>
                 </div>
               ))}
+          </div>
+
+          {/* Video de animacion */}
+          <div className="flex justify-center">
+            <video
+              src={resultVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-40 h-40 object-contain"
+            />
           </div>
 
           <div className="flex justify-center gap-2">
