@@ -21,11 +21,11 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    const supabase = createClient()
     setIsLoading(true)
     setError(null)
 
     try {
+      const supabase = createClient()
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -35,7 +35,17 @@ export default function LoginPage() {
       // Force a full page reload to ensure session is properly recognized
       window.location.href = "/game"
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "Ocurrió un error")
+      if (error instanceof Error) {
+        if (error.message.includes("Supabase no está configurado")) {
+          setError("La conexión a Supabase no está configurada. Conecta la integración desde el panel lateral.")
+        } else if (error.message.includes("Failed to fetch")) {
+          setError("Error de conexión. Verifica que Supabase esté configurado correctamente.")
+        } else {
+          setError(error.message)
+        }
+      } else {
+        setError("Ocurrió un error inesperado")
+      }
       setIsLoading(false)
     }
   }
