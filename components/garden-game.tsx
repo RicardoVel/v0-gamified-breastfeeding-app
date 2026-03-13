@@ -58,6 +58,15 @@ export function GardenGame({
     setShuffledCards(shuffled)
   }, [cards])
 
+  // Audio de victoria al completar
+  useEffect(() => {
+    if (showResults) {
+      const audio = new Audio("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sfx-victory7-jHKGu3MQl9lG65N9zcekGjBG4ciAHD.mp3")
+      audio.volume = 0.5
+      audio.play().catch(() => {})
+    }
+  }, [showResults])
+
   const getGardenIndex = useCallback((correct: number) => {
     const total = cards.filter(c => c.isCorrect).length
     if (correct === 0) return 0
