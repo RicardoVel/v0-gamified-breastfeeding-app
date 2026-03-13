@@ -183,7 +183,15 @@ export function LabelGame({
   if (isCompleted) {
     const resultVideo = stars === 3 
       ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Correcto-WXeL1iSGFJyPKhloZcnaBFCs1sTwOB.mp4"
-      : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+      : stars === 2
+        ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Motivacional-jRBnvgVOsKwmDNVvR2KbmmSX5V4rq5.mp4"
+        : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+    
+    const resultMessage = stars === 3
+      ? "Lo hiciste muy bien! Haz ganado una gotita de vida."
+      : stars === 2
+        ? "Sigue asi! Conocer las partes del agarre correcto es fundamental para una lactancia exitosa."
+        : "Cada error es como una semilla: pronto florecera en conocimiento."
     
     return (
       <div
@@ -213,6 +221,11 @@ export function LabelGame({
               className="w-40 h-40 object-contain"
             />
           </div>
+
+          {/* Frase motivacional */}
+          <p className="text-sm font-semibold text-violet-600 px-2">
+            {resultMessage}
+          </p>
 
           <div className="flex justify-center gap-2">
             {[1, 2, 3].map((i) => (

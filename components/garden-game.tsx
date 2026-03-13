@@ -333,13 +333,13 @@ export function GardenGame({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-3xl p-5 sm:p-6 max-w-sm w-full shadow-2xl text-center mx-3">
               {/* Garden final state */}
-              <div className="relative w-32 h-32 mx-auto mb-3 rounded-2xl overflow-hidden shadow-md">
+              <div className="relative w-28 h-28 mx-auto mb-3 rounded-2xl overflow-hidden shadow-md">
                 <Image
                   src={gardenImages[gardenIndex]}
                   alt="Tu jardin"
                   fill
                   className="object-cover"
-                  sizes="128px"
+                  sizes="112px"
                 />
               </div>
 
@@ -347,26 +347,31 @@ export function GardenGame({
                 {stars === 3 ? "Tu jardin florece con esplendor" : stars === 2 ? "Tu jardin esta creciendo" : "Tu jardin esta brotando"}
               </h2>
 
-              <p className="text-sm text-muted-foreground mb-3">
-                {stars === 3
-                  ? "Tu jardin florece cuando apoyas la lactancia"
-                  : "Sigue aprendiendo para hacer florecer tu jardin por completo."}
-              </p>
-
               {/* Video de animacion */}
-              <div className="flex justify-center mb-3">
+              <div className="flex justify-center mb-2">
                 <video
                   src={stars === 3 
                     ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Correcto-WXeL1iSGFJyPKhloZcnaBFCs1sTwOB.mp4"
-                    : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+                    : stars === 2
+                      ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Motivacional-jRBnvgVOsKwmDNVvR2KbmmSX5V4rq5.mp4"
+                      : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
                   }
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="w-36 h-36 object-contain"
+                  className="w-32 h-32 object-contain"
                 />
               </div>
+
+              {/* Frase motivacional */}
+              <p className="text-sm font-semibold text-violet-600 px-2 mb-3">
+                {stars === 3
+                  ? "Lo hiciste muy bien! Haz ganado una gotita de vida."
+                  : stars === 2
+                    ? "Sigue asi! Identificar lo que favorece la lactancia hace florecer tu jardin."
+                    : "Cada error es como una semilla: pronto florecera en conocimiento."}
+              </p>
 
               {/* Stars */}
               <div className="flex justify-center gap-2 mb-3">

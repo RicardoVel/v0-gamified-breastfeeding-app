@@ -181,7 +181,15 @@ export function TrueFalseGame({
   if (isCompleted) {
     const resultVideo = stars === 3 
       ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Correcto-WXeL1iSGFJyPKhloZcnaBFCs1sTwOB.mp4"
-      : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+      : stars === 2
+        ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Motivacional-jRBnvgVOsKwmDNVvR2KbmmSX5V4rq5.mp4"
+        : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+    
+    const resultMessage = stars === 3
+      ? "Lo hiciste muy bien! Haz ganado una gotita de vida."
+      : stars === 2
+        ? "Sigue asi! Distinguir entre mitos y verdades es clave para apoyar la lactancia."
+        : "Cada error es como una semilla: pronto florecera en conocimiento."
     
     return (
       <div
@@ -200,7 +208,7 @@ export function TrueFalseGame({
           </p>
 
           {/* Summary */}
-          <div className="text-left space-y-2 max-h-48 overflow-y-auto bg-amber-50 rounded-xl p-3">
+          <div className="text-left space-y-2 max-h-32 overflow-y-auto bg-amber-50 rounded-xl p-3">
             <p className="text-xs font-bold text-amber-800 mb-2">Repaso de respuestas:</p>
             {shuffledStatements.map((stmt) => (
               <div key={stmt.id} className="flex items-start gap-2 pb-2 border-b border-amber-100 last:border-0">
@@ -230,6 +238,11 @@ export function TrueFalseGame({
               className="w-40 h-40 object-contain"
             />
           </div>
+
+          {/* Frase motivacional */}
+          <p className="text-sm font-semibold text-violet-600 px-2">
+            {resultMessage}
+          </p>
 
           <div className="flex justify-center gap-2">
             {[1, 2, 3].map((i) => (

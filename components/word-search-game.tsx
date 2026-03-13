@@ -362,7 +362,15 @@ export function WordSearchGame({
   if (isCompleted) {
     const resultVideo = stars === 3 
       ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Correcto-WXeL1iSGFJyPKhloZcnaBFCs1sTwOB.mp4"
-      : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+      : stars === 2
+        ? "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Motivacional-jRBnvgVOsKwmDNVvR2KbmmSX5V4rq5.mp4"
+        : "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Incorrecto-KhdBIWT7AgzchzRYRJGn4Et8VHXs8a.mp4"
+    
+    const resultMessage = stars === 3
+      ? "Lo hiciste muy bien! Haz ganado una gotita de vida."
+      : stars === 2
+        ? "Sigue asi! Cada palabra encontrada representa un concepto importante sobre lactancia."
+        : "Cada error es como una semilla: pronto florecera en conocimiento."
     
     return (
       <div
@@ -380,7 +388,7 @@ export function WordSearchGame({
             Encontraste todas las palabras con {wrongAttempts} error{wrongAttempts !== 1 ? "es" : ""}
           </p>
 
-          <div className="text-left space-y-2 bg-emerald-50 rounded-xl p-3 max-h-36 overflow-y-auto">
+          <div className="text-left space-y-2 bg-emerald-50 rounded-xl p-3 max-h-28 overflow-y-auto">
             <p className="text-xs font-bold text-emerald-700 mb-2">Palabras encontradas:</p>
             {words.map((w) => (
               <div key={w.word} className="flex items-start gap-2">
@@ -404,6 +412,11 @@ export function WordSearchGame({
               className="w-40 h-40 object-contain"
             />
           </div>
+
+          {/* Frase motivacional */}
+          <p className="text-sm font-semibold text-violet-600 px-2">
+            {resultMessage}
+          </p>
 
           <div className="flex justify-center gap-2">
             {[1, 2, 3].map((i) => (
