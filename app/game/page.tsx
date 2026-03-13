@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Star, Trophy, Heart, Sparkles, ShieldCheck, Baby, BookOpen, Clock, Apple, Stethoscope } from "lucide-react"
 import Link from "next/link"
+import { MainMusic } from "@/components/main-music"
 
 export default async function GamePage() {
   const supabase = await createClient()
@@ -101,6 +102,7 @@ export default async function GamePage() {
 
   return (
     <div className="min-h-screen p-2 sm:p-3 md:p-4 overflow-x-hidden">
+      <MainMusic />
       <div className="max-w-2xl mx-auto space-y-4 w-full">
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-xl overflow-hidden">
           <div className="space-y-2 sm:space-y-3">

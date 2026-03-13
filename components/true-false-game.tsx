@@ -178,12 +178,20 @@ export function TrueFalseGame({
     }
   }, [])
 
-  // Audio de victoria al completar
+  // Audio de victoria al completar y luego musica dreamy
   useEffect(() => {
     if (isCompleted) {
-      const audio = new Audio("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sfx-victory7-jHKGu3MQl9lG65N9zcekGjBG4ciAHD.mp3")
-      audio.volume = 0.5
-      audio.play().catch(() => {})
+      const victoryAudio = new Audio("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sfx-victory7-jHKGu3MQl9lG65N9zcekGjBG4ciAHD.mp3")
+      victoryAudio.volume = 0.5
+      victoryAudio.play().catch(() => {})
+      
+      // Despues de que termine el audio de victoria, reproducir musica dreamy
+      victoryAudio.onended = () => {
+        const dreamyAudio = new Audio("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/goldensoundlabs-colors-everywhere-on-earth-dreamy-opening-497549-IFrwDFwXUkq0ZCNS3h0PAsqZs2H6P7.mp3")
+        dreamyAudio.volume = 0.3
+        dreamyAudio.loop = true
+        dreamyAudio.play().catch(() => {})
+      }
     }
   }, [isCompleted])
 

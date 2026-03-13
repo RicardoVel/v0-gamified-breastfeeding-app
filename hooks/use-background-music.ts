@@ -15,6 +15,7 @@ export const BACKGROUND_MUSIC = {
   velvet: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/meditativetiger-velvet-binaurals-rapid-trance-therapy-494113-JIaWm0qyLrZ8wjf8ITrvoh2kBM52Jw.mp3",
   solitude: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/meditativetiger-striped-solitude-hypnotic-theta-pulse-494114-p2BsS6lxT7sfddnLQWmxGkcEv1Q8mW.mp3",
   roar: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/meditativetiger-the-meditative-roar-subliminal-calm-494111-HwjWMnPq3OMvjdHEz1p0uyeiH4nIAs.mp3",
+  dreamy: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/goldensoundlabs-colors-everywhere-on-earth-dreamy-opening-497549-IFrwDFwXUkq0ZCNS3h0PAsqZs2H6P7.mp3",
 } as const
 
 export type MusicTrack = keyof typeof BACKGROUND_MUSIC

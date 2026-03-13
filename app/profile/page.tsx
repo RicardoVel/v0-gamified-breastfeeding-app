@@ -6,6 +6,7 @@ import { Star, Trophy, Award, MailWarning } from "lucide-react"
 import { LogoutButton } from "@/components/logout-button"
 import { VerifyEmailBanner } from "@/components/verify-email-banner"
 import Link from "next/link"
+import { MainMusic } from "@/components/main-music"
 
 export default async function ProfilePage() {
   const supabase = await createClient()
@@ -34,6 +35,7 @@ export default async function ProfilePage() {
 
   return (
     <div className="min-h-screen p-2 sm:p-3 md:p-4 overflow-x-hidden">
+      <MainMusic />
       <div className="max-w-2xl mx-auto space-y-3 sm:space-y-4 w-full">
         {/* Email Verification Banner */}
         {!isEmailVerified && data.user.email && (
