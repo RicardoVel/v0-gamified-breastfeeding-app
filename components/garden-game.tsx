@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Star, ArrowLeft, Check, X, RotateCcw, Sparkles } from "lucide-react"
+import { MusicControl } from "@/components/music-control"
 
 interface GardenCard {
   id: string
@@ -183,6 +184,7 @@ export function GardenGame({
         backgroundPosition: "center",
       } : undefined}
     >
+      <MusicControl track="bengal" volume={0.25} />
       <div className="max-w-lg mx-auto space-y-3">
         {/* Header */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-3 shadow-lg">

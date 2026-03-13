@@ -7,6 +7,7 @@ import { Star, X, Sparkles, RotateCcw } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
+import { MusicControl } from "@/components/music-control"
 
 interface MemoryPair {
   id: string
@@ -329,6 +330,7 @@ export function MemoryGame({
         backgroundPosition: "center",
       } : undefined}
     >
+      <MusicControl track="piano" volume={0.25} />
       <div className="max-w-lg mx-auto space-y-3 w-full">
 
         {/* Header */}

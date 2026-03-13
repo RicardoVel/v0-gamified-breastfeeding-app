@@ -7,6 +7,7 @@ import { Star, X, Sparkles, Check, ThumbsUp, ThumbsDown } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
+import { MusicControl } from "@/components/music-control"
 
 interface TFStatement {
   id: string
@@ -272,6 +273,7 @@ export function TrueFalseGame({
         backgroundPosition: "center",
       } : undefined}
     >
+      <MusicControl track="tranquil" volume={0.25} />
       <div className="max-w-lg mx-auto space-y-4 w-full">
 
         {/* Header */}

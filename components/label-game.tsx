@@ -7,6 +7,7 @@ import { Star, X, Sparkles, Check } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
+import { MusicControl } from "@/components/music-control"
 
 interface LabelZone {
   id: string
@@ -255,6 +256,7 @@ export function LabelGame({
         backgroundPosition: "center",
       } : undefined}
     >
+      <MusicControl track="amber" volume={0.25} />
       <div className="max-w-lg mx-auto space-y-3 w-full">
 
         {/* Header */}

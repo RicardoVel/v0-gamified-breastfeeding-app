@@ -9,6 +9,7 @@ import { Star, X, Check, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
+import { MusicControl } from "@/components/music-control"
 
 interface AnswerOption {
   text: string
@@ -349,6 +350,7 @@ export function DragDropGame({
         backgroundRepeat: 'no-repeat',
       } : undefined}
     >
+      <MusicControl track="majestic" volume={0.25} />
       <div className="max-w-lg mx-auto space-y-4 w-full">
         {/* Header */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg">

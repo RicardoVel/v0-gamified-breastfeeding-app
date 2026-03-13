@@ -7,6 +7,7 @@ import { Star, X, ChevronRight, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
+import { MusicControl } from "@/components/music-control"
 
 interface MatchingPair {
   name: string
@@ -260,6 +261,7 @@ export function MatchingGame({
         backgroundPosition: "center",
       } : undefined}
     >
+      <MusicControl track="nature" volume={0.25} />
       <div className="max-w-lg mx-auto space-y-3 w-full">
 
         {/* Header */}
