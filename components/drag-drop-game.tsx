@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
 import { MusicControl } from "@/components/music-control"
+import { audioManager } from "@/lib/audio-manager"
 
 interface AnswerOption {
   text: string
@@ -283,17 +284,7 @@ export function DragDropGame({
   // Audio de victoria al completar y luego musica dreamy
   useEffect(() => {
     if (isCompleted) {
-      const victoryAudio = new Audio("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sfx-victory7-jHKGu3MQl9lG65N9zcekGjBG4ciAHD.mp3")
-      victoryAudio.volume = 0.5
-      victoryAudio.play().catch(() => {})
-      
-      // Despues de que termine el audio de victoria, reproducir musica dreamy
-      victoryAudio.onended = () => {
-        const dreamyAudio = new Audio("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/goldensoundlabs-colors-everywhere-on-earth-dreamy-opening-497549-IFrwDFwXUkq0ZCNS3h0PAsqZs2H6P7.mp3")
-        dreamyAudio.volume = 0.3
-        dreamyAudio.loop = true
-        dreamyAudio.play().catch(() => {})
-      }
+      audioManager.playVictoryThenDreamy()
     }
   }, [isCompleted])
 
