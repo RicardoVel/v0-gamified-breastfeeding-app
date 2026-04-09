@@ -2,7 +2,7 @@ import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Star, Trophy, Heart, Sparkles, ShieldCheck, Baby, BookOpen, Clock, Apple, Stethoscope } from "lucide-react"
+import { Star, Trophy, Heart, Sparkles, ShieldCheck, Baby, BookOpen, Clock, Stethoscope, Lock } from "lucide-react"
 import Link from "next/link"
 import { MainMusic } from "@/components/main-music"
 
@@ -17,6 +17,35 @@ export default async function GamePage() {
   // Get user profile
   const { data: profile } = await supabase.from("users").select("*").eq("id", data.user.id).single()
 
+  // Get game progress to check which levels are completed with at least 1 star
+  const { data: progress } = await supabase
+    .from("game_progress")
+    .select("level, stars_earned")
+    .eq("user_id", data.user.id)
+
+  // Create a map of completed levels with their stars
+  const completedLevels = new Map<number, number>()
+  progress?.forEach((p) => {
+    const currentStars = completedLevels.get(p.level) || 0
+    if (p.stars_earned > currentStars) {
+      completedLevels.set(p.level, p.stars_earned)
+    }
+  })
+
+  // Function to check if a level is unlocked
+  const isLevelUnlocked = (levelId: number): boolean => {
+    // Level 1 is always unlocked
+    if (levelId === 1) return true
+    // Other levels require the previous level to be completed with at least 1 star
+    const previousLevelStars = completedLevels.get(levelId - 1) || 0
+    return previousLevelStars >= 1
+  }
+
+  // Function to get stars earned for a level
+  const getStarsForLevel = (levelId: number): number => {
+    return completedLevels.get(levelId) || 0
+  }
+
   const levels = [
     {
       id: 1,
@@ -25,6 +54,7 @@ export default async function GamePage() {
       icon: Heart,
       color: "pastel-pink",
       locked: false,
+      stars: getStarsForLevel(1),
     },
     {
       id: 2,
@@ -32,7 +62,8 @@ export default async function GamePage() {
       description: "Clasifica mitos y verdades sobre la lactancia",
       icon: Sparkles,
       color: "soft-gold",
-      locked: profile?.level ? profile.level < 2 : true,
+      locked: !isLevelUnlocked(2),
+      stars: getStarsForLevel(2),
     },
     {
       id: 3,
@@ -40,7 +71,8 @@ export default async function GamePage() {
       description: "Identifica las posiciones para amamantar",
       icon: Baby,
       color: "sky-blue",
-      locked: profile?.level ? profile.level < 3 : true,
+      locked: !isLevelUnlocked(3),
+      stars: getStarsForLevel(3),
     },
     {
       id: 4,
@@ -48,7 +80,8 @@ export default async function GamePage() {
       description: "Identifica las partes del agarre al pecho",
       icon: Heart,
       color: "pastel-pink",
-      locked: profile?.level ? profile.level < 4 : true,
+      locked: !isLevelUnlocked(4),
+      stars: getStarsForLevel(4),
     },
     {
       id: 5,
@@ -56,7 +89,8 @@ export default async function GamePage() {
       description: "Juego de memoria sobre soluciones al dolor",
       icon: Stethoscope,
       color: "soft-gold",
-      locked: profile?.level ? profile.level < 5 : true,
+      locked: !isLevelUnlocked(5),
+      stars: getStarsForLevel(5),
     },
     {
       id: 6,
@@ -64,7 +98,8 @@ export default async function GamePage() {
       description: "Ordena los pasos para aliviar la congestion",
       icon: BookOpen,
       color: "sky-blue",
-      locked: profile?.level ? profile.level < 6 : true,
+      locked: !isLevelUnlocked(6),
+      stars: getStarsForLevel(6),
     },
     {
       id: 7,
@@ -72,7 +107,8 @@ export default async function GamePage() {
       description: "Encuentra palabras sobre cuidados mamarios",
       icon: ShieldCheck,
       color: "pastel-pink",
-      locked: profile?.level ? profile.level < 7 : true,
+      locked: !isLevelUnlocked(7),
+      stars: getStarsForLevel(7),
     },
     {
       id: 8,
@@ -80,7 +116,8 @@ export default async function GamePage() {
       description: "Verdadero o falso sobre la mastitis",
       icon: Clock,
       color: "soft-gold",
-      locked: profile?.level ? profile.level < 8 : true,
+      locked: !isLevelUnlocked(8),
+      stars: getStarsForLevel(8),
     },
     {
       id: 9,
@@ -88,7 +125,8 @@ export default async function GamePage() {
       description: "Clasifica que favorece y que no la lactancia",
       icon: Sparkles,
       color: "sky-blue",
-      locked: profile?.level ? profile.level < 9 : true,
+      locked: !isLevelUnlocked(9),
+      stars: getStarsForLevel(9),
     },
     {
       id: 10,
@@ -96,7 +134,8 @@ export default async function GamePage() {
       description: "Identifica los signos de un bebe bien alimentado",
       icon: Trophy,
       color: "soft-gold",
-      locked: profile?.level ? profile.level < 10 : true,
+      locked: !isLevelUnlocked(10),
+      stars: getStarsForLevel(10),
     },
   ]
 
@@ -149,14 +188,27 @@ export default async function GamePage() {
                     <div className="flex-1 min-w-0 overflow-hidden">
                       <h3 className="text-xs sm:text-sm font-bold mb-0.5 truncate">{level.title}</h3>
                       <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-2">{level.description}</p>
+                      {/* Estrellas ganadas */}
+                      {level.stars > 0 && (
+                        <div className="flex gap-0.5 mt-1">
+                          {[1, 2, 3].map((i) => (
+                            <Star 
+                              key={i} 
+                              size={12} 
+                              className={i <= level.stars ? "text-soft-gold fill-soft-gold" : "text-gray-300"} 
+                            />
+                          ))}
+                        </div>
+                      )}
                     </div>
                     {level.locked ? (
-                      <Button disabled size="sm" className="rounded-xl text-[10px] sm:text-xs px-2 sm:px-3 flex-shrink-0 h-8">
+                      <Button disabled size="sm" className="rounded-xl text-[10px] sm:text-xs px-2 sm:px-3 flex-shrink-0 h-8 gap-1">
+                        <Lock size={12} />
                         Bloqueado
                       </Button>
                     ) : (
                       <Button asChild size="sm" className="rounded-xl text-[10px] sm:text-xs px-2 sm:px-3 flex-shrink-0 h-8">
-                        <Link href={`/game/level/${level.id}`}>Jugar</Link>
+                        <Link href={`/game/level/${level.id}`}>{level.stars > 0 ? "Repetir" : "Jugar"}</Link>
                       </Button>
                     )}
                   </div>
