@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Star, ArrowLeft, Check, X, RotateCcw, Sparkles } from "lucide-react"
 import { MusicControl } from "@/components/music-control"
 import { audioManager } from "@/lib/audio-manager"
+import { createClient } from "@/lib/supabase/client"
 
 interface GardenCard {
   id: string
@@ -124,12 +125,61 @@ export function GardenGame({
 
     setTimeout(() => setShowResults(true), 1000)
 
+    // Save progress using Supabase client
+    const supabase = createClient()
+    
     try {
-      await fetch("/api/progress", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, levelId, stars: earnedStars }),
+      // Check previous best
+      const { data: previousBest } = await supabase
+        .from("game_progress")
+        .select("stars_earned")
+        .eq("user_id", userId)
+        .eq("level", levelId)
+        .eq("game_type", "garden")
+        .order("stars_earned", { ascending: false })
+        .limit(1)
+        .single()
+
+      const previousStars = previousBest?.stars_earned || 0
+      const starsToAdd = earnedStars > previousStars ? earnedStars - previousStars : 0
+
+      // Update user stats if new stars earned
+      if (starsToAdd > 0) {
+        const { data: userData } = await supabase
+          .from("users")
+          .select("total_stars, experience_points, level")
+          .eq("id", userId)
+          .single()
+
+        if (userData) {
+          await supabase
+            .from("users")
+            .update({
+              total_stars: (userData.total_stars || 0) + starsToAdd,
+              experience_points: (userData.experience_points || 0) + earnedStars * 10,
+              level: Math.max(userData.level || 1, levelId + 1),
+            })
+            .eq("id", userId)
+        }
+      }
+
+      // Insert game progress
+      await supabase.from("game_progress").insert({
+        user_id: userId,
+        game_type: "garden",
+        level: levelId,
+        stars_earned: earnedStars,
+        completed: true,
+        completed_at: new Date().toISOString(),
       })
+
+      // Achievement for perfect score
+      if (earnedStars === 3 && previousStars < 3) {
+        await supabase.from("achievements").insert({
+          user_id: userId,
+          achievement_type: `level_${levelId}_perfect`,
+        })
+      }
     } catch (e) {
       console.error("Error saving progress:", e)
     }
