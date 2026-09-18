@@ -1,10 +1,12 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Sparkles, Star, Heart } from "lucide-react"
+import { MainMusic } from "@/components/main-music"
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      <MainMusic />
       {/* Floating stars decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <Star className="absolute top-20 left-10 text-soft-gold opacity-30 animate-float" size={16} />

@@ -50,7 +50,7 @@ export default function RootLayout({
         <meta name="screen-orientation" content="portrait" />
         <meta name="x5-orientation" content="portrait" />
       </head>
-      <body className={`font-sans antialiased`}>
+      <body className={`font-sans antialiased overflow-x-hidden`}>
         {children}
         <Analytics />
       </body>

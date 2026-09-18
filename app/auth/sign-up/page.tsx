@@ -31,7 +31,7 @@ export default function SignUpPage() {
         email,
         password,
         options: {
-          emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/game`,
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
           data: {
             display_name: displayName,
           },
@@ -46,10 +46,17 @@ export default function SignUpPage() {
         window.location.href = "/game"
       } else {
         // Email confirmation is required
-        window.location.href = "/auth/verify-email"
+        window.location.href = `/auth/verify-email?email=${encodeURIComponent(email)}`
       }
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "Ocurrió un error")
+      const msg = error instanceof Error ? error.message : "Ocurrio un error"
+      if (msg.toLowerCase().includes("rate limit")) {
+        setError("Se han enviado demasiados correos. Por favor espera unos minutos antes de intentar nuevamente.")
+      } else if (msg.toLowerCase().includes("already registered")) {
+        setError("Este correo ya esta registrado. Intenta iniciar sesion.")
+      } else {
+        setError(msg)
+      }
       setIsLoading(false)
     }
   }
